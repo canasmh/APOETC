@@ -24,9 +24,23 @@ One can easily import the package (once downloaded) by typing into python
 import APOETC
 ```
 
-While this should work, I recommend import the modules from APOETC instead importing the actual package. i.e.,
+While this should work, I recommend importing the modules from APOETC instead importing the actual package. i.e.,
 
 ```python
 
 from APOETC import *
 ``` 
+
+This way, whenever you call a class or a function from the modules, you only need to write ```module.class``` instead of writing ```APOETC.module.class```.
+
+## Using APOETC
+
+As mentioned above, the only instrument that functions in this package is the Arctic imaging instrument. For starters, let's take a look at the arc module.
+
+```python
+
+from APOETC import arc
+
+instrument = arc.Instrument('Arctic')
+```
+
