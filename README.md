@@ -15,3 +15,11 @@ Use the package manager [pip](https://pip.pypa.io/en/stable/) to install APOETC.
 pip install ./
 ```
 
+## Importing APOETC
+
+One can easily import the package (once downloaded) by typing into python
+
+```python
+
+import APOETC
+```
