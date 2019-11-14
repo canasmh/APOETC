@@ -9,9 +9,9 @@ This package was intented only for the Astrophysical Research Consortium (ARC) 3
 
 Installation
 ------------
-Use the package manager `pip`_ to install APOETC. First, ``cd`` into the main directory (containing the setup.py file, and then type in the command line
+Use the package manager `pip`_ to install APOETC. First, ``cd`` into the main directory (containing the setup.py file), and then type in the command line
 
-.. _pip https://pip.pypa.io/en/stable/
+.. _pip: https://pip.pypa.io/en/stable/
 
 .. code:: bash
    pip install ./
