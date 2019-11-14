@@ -1,0 +1,10 @@
+\babel@toc {english}{}
+\contentsline {chapter}{\numberline {1}About APOETC}{3}{chapter.1}% 
+\contentsline {section}{\numberline {1.1}Documentation}{3}{section.1.1}% 
+\contentsline {subsection}{\numberline {1.1.1}The \sphinxstyleliteralintitle {\sphinxupquote {arc}} module}{3}{subsection.1.1.1}% 
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {\sphinxupquote {Instrument}}}{3}{subsubsection*.3}% 
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {\sphinxupquote {Telescope}}}{4}{subsubsection*.7}% 
+\contentsline {subsection}{\numberline {1.1.2}The \sphinxstyleliteralintitle {\sphinxupquote {signal\_to\_noise}} module}{4}{subsection.1.1.2}% 
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {\sphinxupquote {Sky}}}{4}{subsubsection*.9}% 
+\contentsline {subsubsection}{\sphinxstyleliteralintitle {\sphinxupquote {Target}}}{4}{subsubsection*.13}% 
+\contentsline {chapter}{Index}{5}{section*.22}% 

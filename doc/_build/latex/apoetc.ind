@@ -1,0 +1,45 @@
+\begin{sphinxtheindex}
+\let\bigletter\sphinxstyleindexlettergroup
+\let\spxpagem \sphinxstyleindexpagemain
+\let\spxentry \sphinxstyleindexentry
+\let\spxextra \sphinxstyleindexextra
+
+  \bigletter B
+  \item \spxentry{blackbody\_lambda()}\spxextra{signal\_to\_noise.Target method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter C
+  \item \spxentry{convert\_to\_flux()}\spxextra{signal\_to\_noise.Target method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter E
+  \item \spxentry{emission()}\spxextra{signal\_to\_noise.Sky method}, \hyperpage{4}
+
+  \indexspace
+  \bigletter F
+  \item \spxentry{filter()}\spxextra{arc.Instrument method}, \hyperpage{3}
+  \item \spxentry{filter\_range}\spxextra{signal\_to\_noise.Target attribute}, \hyperpage{4}
+
+  \indexspace
+  \bigletter I
+  \item \spxentry{Instrument}\spxextra{class in arc}, \hyperpage{3}
+  \item \spxentry{interpolate\_efficiency()}\spxextra{arc.Instrument method}, \hyperpage{3}
+
+  \indexspace
+  \bigletter M
+  \item \spxentry{magnitude}\spxextra{signal\_to\_noise.Target attribute}, \hyperpage{4}
+  \item \spxentry{magnitude\_system}\spxextra{signal\_to\_noise.Target attribute}, \hyperpage{4}
+
+  \indexspace
+  \bigletter S
+  \item \spxentry{SED}\spxextra{signal\_to\_noise.Target attribute}, \hyperpage{4}
+  \item \spxentry{Sky}\spxextra{class in signal\_to\_noise}, \hyperpage{4}
+
+  \indexspace
+  \bigletter T
+  \item \spxentry{Target}\spxextra{class in signal\_to\_noise}, \hyperpage{4}
+  \item \spxentry{Telescope}\spxextra{class in arc}, \hyperpage{4}
+  \item \spxentry{temp}\spxextra{signal\_to\_noise.Target attribute}, \hyperpage{4}
+  \item \spxentry{transmission()}\spxextra{signal\_to\_noise.Sky method}, \hyperpage{4}
+
+\end{sphinxtheindex}
