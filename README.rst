@@ -13,7 +13,7 @@ Use the package manager `pip`_ to install APOETC. First, ``cd`` into the main di
 
 .. _pip: https://pip.pypa.io/en/stable/
 
-`` pip install ./ ``
+``pip install ./``
 
 
 Importing APOETC
