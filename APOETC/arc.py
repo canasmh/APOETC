@@ -12,16 +12,6 @@ from os.path import dirname, abspath
 from astropy.io import ascii
 from scipy.interpolate import InterpolatedUnivariateSpline
 
-"""[Summary]
-
-:param [ParamName]: [ParamDescription], defaults to [DefaultParamVal]
-:type [ParamName]: [ParamType](, optional)
-...
-:raises [ErrorType]: [ErrorDescription]
-...
-:return: [ReturnDescription]
-:rtype
-"""
 class Instrument:
     """This object represents the instrument used.
 
@@ -72,9 +62,9 @@ class Instrument:
         :param SDSS: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to False
         :type SDSS: bool, optional
         ...
-        :return: The transmission of the filter interpolated over the bandpass. Also sets a filter_range attribute which
-        is a tuple containing (lambda_min,lambda_max) of the filter in Angstroms.
-        :rtype: Interpolated object
+        ...
+        :return: The transmission of the filter interpolated over the bandpass. Also sets a filter_range attribute (Angstroms).
+        :rtype: Interpolated object.
         """
     
         #Define the path to the filter .dat files based on the type of filter 
@@ -129,7 +119,6 @@ class Telescope:
 
     def __init__(self,obs_name = 'ARC 3.5m',aperature = 3.5):
         """The constructor of the Telescope class.
-
         """
 
         #Name of observatory
