@@ -1,6 +1,8 @@
 APOETC
 ======
-This package is used to calculate an exposure time based on a desired signal to noise ratio. See documentation [here](file:///APOETC/blob/master/doc/_build/html/index.html)
+This package is used to calculate an exposure time based on a desired signal to noise ratio. See documentation `here`_
+
+.. _here: https://canasmh.github.io/APOETC/
 
 
 Limitations
