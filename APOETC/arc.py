@@ -11,10 +11,6 @@ import numpy as np
 from os.path import dirname, abspath
 from astropy.io import ascii
 from scipy.interpolate import InterpolatedUnivariateSpline
-from synphot.models import BlackBody1D
-from synphot import units
-from astropy import units as u
-from synphot import SourceSpectrum
 
 """[Summary]
 
@@ -33,26 +29,6 @@ class Instrument:
     :type inst_name: str
 
     """
-    
-    # Attributes:
-    #     inst_name : str
-    #         Name of the instrument used.
-    #
-    #     sensitivity : arr-like
-    #         Quantum efficiency of the instrument (per wavelength).
-    #
-    #     wavelength : arr-like
-    #         Wavelength range of instrument in Angstroms (coupled with efficiency).
-    #
-    #
-    #     readout_noise : float
-    #         Readout noise of the instrument (electrons/pix).
-    #
-    #     gain : float
-    #         Gain of the instrument.
-    #
-    #     plate_scale : float
-    #         Plate scale of the detector (arcsec/pix).
 
     def __init__(self, inst_name):
         """The constructor for the Instrument class.
