@@ -5,6 +5,148 @@ Created on Sun Nov 10 23:32:35 2019
 
 @author: Manuel H. Canas
 """
+class Sky:
+    def __init__(self, lunar_phase=0, seeing=1, airmass=1, transmission = 0.90):
+
+        self.lunar_phase = lunar_phase
+        self.seeing = seeing
+        self.airmass = airmass
+
+        self.transmission()
+        self.emission()
+
+    def transmission(self):
+        if self.airmass <= 1.25:
+            trans_file = 'trans_1.txt'
+        elif self.airmass < 1.75 and airmass > 1.25:
+            trans_file = 'trans_1_5.txt'
+        elif self.airmass >= 1.75 and airmass < 2.25:
+            trans_file = 'trans_2.txt'
+        elif self.airmass >= 2.25:
+            trans_file = 'trans_2_5.txt'
+
+        transmission = np.loadtxt('../data/sky/' + trans_file)
+        self.sky_transmission = ius(transmission[:, 0] \
+                                                             , transmission[:, 1] \
+                                                             )
+
+    def emission(self):
+        if lunar_phase < 0.25:
+            emission_file = 'moon_00.txt'
+        elif lunar_phase >= 0.25 and lunar_phase < 0.75:
+            emission_file = 'moon_50.txt'
+        elif lunar_phase >= 0.75:
+            emission_file = 'moon_100.txt'
+
+        emission = np.loadtxt('../data/sky/' + emission_file)
+        self.sky_emission = interpolate.InterpolatedUnivariateSpline(
+            emission[:, 0], emission[:, 1])
+
+class Target:
+    """Object representing the target star.
+
+    Attributes:
+        magnitude : float
+            The magnitude of the star you wish to observe.
+
+        magnitude_system : str
+            The magnitude used in the above attribute.
+
+        filter_range : tuple
+            The band pass of the filter (xmin,xmax).
+
+        SED : obj
+            If specified, this will contain the interpolated spectral energy distribution
+            of the target star.
+
+        temp : float
+            The temperature of the star. This is used only if you wish to
+            use Plank's law to obtain the SED.
+
+    """
+
+    def __init__(
+            self,
+            magnitude,
+            magsystem,
+            filter_range,
+            SED=None,
+            temp=5778
+    ):
+        """Creates an instance of the Target class.
+
+        Parameters:
+            magnitude : float
+                The magnitude of the star you wish to observe.
+
+            magsystem : obj
+                The magnitude system used in the above paramer.
+
+            filter_range : tuple
+                The range of the filter used to observe this target.
+
+            SED : obj (optional)
+                The spectral energy distribution of the target star.
+                Default is None.
+
+            temp : float (optional)
+                The temperature of the target star. This is used to create
+                a black body spectrum of the star.
+        """
+
+        #Use the specified magnitude system.
+        if magsystem.lower() == 'vegamag':
+            magnitude_system = units.VEGAMAG
+        elif magsystem.lower() == 'stmag':
+            magnitude_system = u.STmag
+        elif magsystem.lower() == 'abnu':
+            magnitude_system = u.ABmag
+
+
+        self.magnitude = magnitude
+        self.magnitude_system = magnitude_system
+        self.SED = SED
+        self.temp = temp
+        self.filter_range = filter_range
+
+    def convert_to_flux(self):
+        """Convert magnitude of target star to flux.
+
+        Returns:
+            The wavelength flux of the target in cgs units.
+        """
+
+        #Get the spectrum of Vega
+        vega = SourceSpectrum.from_vega()
+
+        #convert to flux using units.convert_flux
+        flux = units.convert_flux(
+            self.filter_range,
+            self.magnitude*magntidue_system,
+            units.FLAM,
+            vegaspec=vega
+        )
+
+        #return the flux of the star
+        return flux
+
+    def blackbody_lambda(self):
+        """Calculates the spectrum of a blackbody from temperature temp.
+
+        Returns:
+            The wavelength flux of the target as determined by a blackbody
+        """
+
+        #Get a black body spectrum of temperature temp
+        sp = SourceSpectrum(BlackBody1D, temperature=self.temp * u.K)
+        sp_new = sp / np.mean(sp(self.range * u.AA,
+                                 flux_unit=units.FLAM
+                                 ) / self.convert_to_flux()
+                              )
+        x = sp_new(range(1000, 30000) * u.AA, flux_unit=units.FLAM)
+        bb_lam = ius(range(10, 30000), x)
+
+        return bb_lam
 
 
 #
