@@ -23,3 +23,10 @@ One can easily import the package (once downloaded) by typing into python
 
 import APOETC
 ```
+
+While this should work, I recommend import the modules from APOETC instead importing the actual package. i.e.,
+
+```python
+
+from APOETC import *
+``` 
