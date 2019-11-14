@@ -7,11 +7,11 @@ Limitations
 ------------
 This package was intented only for the Astrophysical Research Consortium (ARC) 3.5m telescope at the Apache Point Observatory. As of right now, only the arctic instrument is available when using the arc.Instrument class.
 
-## Installation
+Installation
+------------
+Use the package manager `pip`_ to install APOETC. First, ``cd`` into the main directory (containing the setup.py file, and then type in the command line
 
-Use the package manager `pip`_ to install APOETC. First, ```cd``` into the main directory (containing the setup.py file, and then type in the command line
-
-.._pip https://pip.pypa.io/en/stable/
+.. _pip https://pip.pypa.io/en/stable/
 
 .. code:: bash
    pip install ./
