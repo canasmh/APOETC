@@ -1,12 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-"""
-Created on Mon Oct  7 14:25:10 2019
-
-@authors: Manuel H. Canas
-"""
-
 import numpy as np
 from os.path import dirname, abspath
 from astropy.io import ascii
@@ -25,7 +19,7 @@ class Instrument:
 
         """
         # Path to the directory containing instrument data:
-        path_to_dir = dirname(abspath(__file__))+'../data/APO/'+inst_name
+        path_to_dir = dirname(abspath(__file__))+'/data/APO/'+inst_name
 
         #set attributes
         #--------------
@@ -71,9 +65,9 @@ class Instrument:
         #used.
     
         if Johnson:
-            path_to_dir = dirname(abspath(__file__)) + '../data/APO/Filter/Johnson/'
+            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filter/Johnson/'
         elif SDSS:
-            path_to_dir = dirname(abspath(__file__)) + '../data/APO/Filter/SDSS/'
+            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filter/SDSS/'
     
         #Get the transmission and wavelength from the .dat file
         filt_data = ascii.read(path_to_dir+bandpass+'.dat')
@@ -88,11 +82,11 @@ class Instrument:
                                             filt_transmission,k=3)
 
         #Set the range of the filter as an object attribute.
-        setattr(Instrument,filter_range,(filt_wavelength[0],filt_wavelength[-1]))
+        setattr(Instrument,'filter_range',(filt_wavelength[0],filt_wavelength[-1]))
 
         #Return the interpolated filter.
         return filt
-        #
+    
     def interpolate_efficiency(self):
         
         """Method that interpolates the quantum efficiency.

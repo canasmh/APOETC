@@ -1,11 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sun Nov 10 23:32:35 2019
 
-@author: Manuel H. Canas
-"""
 class Sky:
+
     def __init__(self, lunar_phase=0, seeing=1, airmass=1, transmission = 0.90):
 
         self.lunar_phase = lunar_phase
