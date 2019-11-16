@@ -9,6 +9,10 @@ from scipy.interpolate import InterpolatedUnivariateSpline
 class Instrument:
     """This object represents the instrument used.
 
+    Attributes
+    -----------
+    inst_name : str
+        THe name of the instrument used
     :param inst_name: This is the name of the instrument used.
     :type inst_name: str
 
