@@ -7,9 +7,9 @@ setup(name='APOETC',
       author='Manuel H. Canas, Alexander Stone-Martinex, Bryson Stemock, Rogelio Ochoa, Hasan Rahman',
       author_email = 'canasmh@nmsu.edu',
       packages=['APOETC'],
-      scripts=['./bin/etc_script.py'],
+      scripts=['APOETC/bin/etc_script.py'],
       include_package_data=True,
-      package_data={'APOETC':['./../data/Sky/*.txt','./../data/APO/Arctic/*.dat']},
+      package_data={'APOETC':['./data/APO/Arctic/*.dat','./data/APO/Filter/Johnson/*.dat','./data/APO/Filter/SDSS/*.dat']},
       description='An exposure time calculator for the ARC 3.5m telescope'
       )
 
