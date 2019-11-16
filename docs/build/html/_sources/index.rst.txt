@@ -5,7 +5,7 @@
 
 Welcome!
 ==================================
-Welcome to APOETC's documentation (Apache Point Observatory Exposure Time Calculator).
+Welcome to the documentation for APOETC (Apache Point Observatory Exposure Time Calculator).
 
 About APOETC
 ------------

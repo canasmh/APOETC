@@ -1,8 +1,13 @@
-Documentation
+Modules
 =============
 
 The ``arc`` module
 ------------------
+
+.. automodule:: APOETC.arc
+    :members:
+    :undoc-members:
+    :show-inheritance:
 
 ``Instrument``
 *****************************

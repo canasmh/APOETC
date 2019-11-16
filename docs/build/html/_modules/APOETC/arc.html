@@ -4,18 +4,18 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <title>arc &#8212; APOETC 0.0.1 documentation</title>
-    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
-    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
-    <script type="text/javascript" src="../_static/jquery.js"></script>
-    <script type="text/javascript" src="../_static/underscore.js"></script>
-    <script type="text/javascript" src="../_static/doctools.js"></script>
-    <script type="text/javascript" src="../_static/language_data.js"></script>
-    <link rel="index" title="Index" href="../genindex.html" />
-    <link rel="search" title="Search" href="../search.html" />
+    <title>APOETC.arc &#8212; APOETC 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
    
-  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
   
   
   <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
@@ -30,16 +30,22 @@
 
           <div class="body" role="main">
             
-  <h1>Source code for arc</h1><div class="highlight"><pre>
+  <h1>Source code for APOETC.arc</h1><div class="highlight"><pre>
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Created on Mon Oct  7 14:25:10 2019</span>
+
+<span class="sd">@authors: Manuel H. Canas</span>
+<span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">abspath</span>
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">ascii</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">InterpolatedUnivariateSpline</span>
 
-<div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../modules.html#arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
+<div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;This object represents the instrument used.</span>
 
 <span class="sd">    :param inst_name: This is the name of the instrument used.</span>
@@ -79,7 +85,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plate_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/plate_scale.dat&#39;</span><span class="p">)</span>
                                     <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         
-<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../modules.html#arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bandpass</span><span class="p">,</span> <span class="n">Johnson</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">SDSS</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bandpass</span><span class="p">,</span> <span class="n">Johnson</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">SDSS</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method that returns the transmission of specified filter.</span>
 
 <span class="sd">        :param bandpass: The bandpass of the filter used (i.e., &#39;U&#39;,&#39;B&#39;,&#39;V&#39;,&#39;R&#39;, or &#39;I&#39;).</span>
@@ -119,8 +125,8 @@
 
         <span class="c1">#Return the interpolated filter.</span>
         <span class="k">return</span> <span class="n">filt</span></div>
-    
-<div class="viewcode-block" id="Instrument.interpolate_efficiency"><a class="viewcode-back" href="../modules.html#arc.Instrument.interpolate_efficiency">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1">#</span>
+<div class="viewcode-block" id="Instrument.interpolate_efficiency"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Instrument.interpolate_efficiency">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;Method that interpolates the quantum efficiency.</span>
 
@@ -135,7 +141,7 @@
         <span class="k">return</span> <span class="n">efficiency</span></div></div>
 
 
-<div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../modules.html#arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
+<div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Object that represents the telescope used.</span>
 
 <span class="sd">    :param obs_name: The name of the observatory used, default to &#39;ARC 3.5m&#39;.</span>
@@ -164,10 +170,10 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="../index.html">
-              <img class="logo" src="../_static/3_5.JPG" alt="Logo"/>
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/3_5.JPG" alt="Logo"/>
             </a></p>
-<h1 class="logo"><a href="../index.html">APOETC</a></h1>
+<h1 class="logo"><a href="../../index.html">APOETC</a></h1>
 
 
 
@@ -179,14 +185,14 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
-  <li><a href="../index.html">Documentation overview</a><ul>
-  <li><a href="index.html">Module code</a><ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
   </ul></li>
   </ul></li>
 </ul>
@@ -194,7 +200,7 @@
 <div id="searchbox" style="display: none" role="search">
   <h3 id="searchlabel">Quick search</h3>
     <div class="searchformwrapper">
-    <form class="search" action="../search.html" method="get">
+    <form class="search" action="../../search.html" method="get">
       <input type="text" name="q" aria-labelledby="searchlabel" />
       <input type="submit" value="Go" />
     </form>
