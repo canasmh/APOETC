@@ -1,0 +1,229 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>APOETC.arc &#8212; APOETC 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <script type="text/javascript" src="../../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for APOETC.arc</h1><div class="highlight"><pre>
+<span></span><span class="ch">#!/usr/bin/env python3</span>
+<span class="c1"># -*- coding: utf-8 -*-</span>
+
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">abspath</span>
+<span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">ascii</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">InterpolatedUnivariateSpline</span>
+
+<div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;This object represents the instrument used.</span>
+
+<span class="sd">    :param inst_name: This is the name of the instrument used.</span>
+<span class="sd">    :type inst_name: str</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The constructor for the Instrument class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Path to the directory containing instrument data:</span>
+        <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;/data/APO/&#39;</span><span class="o">+</span><span class="n">inst_name</span>
+
+        <span class="c1">#set attributes</span>
+        <span class="c1">#--------------</span>
+
+        <span class="c1">#Name of instrument</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">inst_name</span> <span class="o">=</span> <span class="n">inst_name</span> <span class="c1">#i.e., &#39;Artcic&#39;</span>
+
+        <span class="c1">#Read out noise of instrument</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">readout_noise</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span> <span class="o">+</span> <span class="s1">&#39;/readout_noise.dat&#39;</span><span class="p">,</span>
+                                                 <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;no_header&#39;</span>
+                                                 <span class="p">)</span>
+                                     <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#electrons/pix</span>
+
+        <span class="c1">#Gain of instrument</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gain</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/gain.dat&#39;</span><span class="p">,</span>
+                                        <span class="nb">format</span><span class="o">=</span><span class="s1">&#39;no_header&#39;</span>
+                                        <span class="p">)</span>
+                             <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#gain</span>
+        <span class="c1">#Quantum effiency of instrument</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sensitivity</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/qe.dat&#39;</span><span class="p">)[</span><span class="s1">&#39;col2&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+
+        <span class="c1">#Wavelength of quantum efficiency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/qe.dat&#39;</span><span class="p">)[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">plate_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/plate_scale.dat&#39;</span><span class="p">)</span>
+                                    <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+        
+<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bandpass</span><span class="p">,</span> <span class="n">Johnson</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">SDSS</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method that returns the transmission of specified filter.</span>
+
+<span class="sd">        :param bandpass: The bandpass of the filter used (i.e., &#39;U&#39;,&#39;B&#39;,&#39;V&#39;,&#39;R&#39;, or &#39;I&#39;).</span>
+<span class="sd">        :type bandpass: str</span>
+<span class="sd">        :param Johnson: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to True</span>
+<span class="sd">        :type Johnson: bool, optional</span>
+<span class="sd">        :param SDSS: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to False</span>
+<span class="sd">        :type SDSS: bool, optional</span>
+<span class="sd">        ...</span>
+<span class="sd">        ...</span>
+<span class="sd">        :return: The transmission of the filter interpolated over the bandpass. Also sets a filter_range attribute (Angstroms).</span>
+<span class="sd">        :rtype: Interpolated object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="c1">#Define the path to the filter .dat files based on the type of filter </span>
+        <span class="c1">#used.</span>
+    
+        <span class="k">if</span> <span class="n">Johnson</span><span class="p">:</span>
+            <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/Filter/Johnson/&#39;</span>
+        <span class="k">elif</span> <span class="n">SDSS</span><span class="p">:</span>
+            <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/Filter/SDSS/&#39;</span>
+    
+        <span class="c1">#Get the transmission and wavelength from the .dat file</span>
+        <span class="n">filt_data</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="n">bandpass</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span><span class="p">)</span>
+            
+        <span class="c1">#Get the transmission and wavelength from the .dat file</span>
+    
+        <span class="n">filt_wavelength</span> <span class="o">=</span> <span class="n">filt_data</span><span class="p">[</span><span class="mi">0</span><span class="p">][:]</span>
+        <span class="n">filt_transmission</span> <span class="o">=</span> <span class="n">filt_data</span><span class="p">[</span><span class="mi">1</span><span class="p">][:]</span>
+
+        <span class="c1">#Interpolate the filter</span>
+        <span class="n">filt</span> <span class="o">=</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span><span class="n">filt_wavelength</span><span class="p">,</span>\
+                                            <span class="n">filt_transmission</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="c1">#Set the range of the filter as an object attribute.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">Instrument</span><span class="p">,</span><span class="s1">&#39;filter_range&#39;</span><span class="p">,(</span><span class="n">filt_wavelength</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">filt_wavelength</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+
+        <span class="c1">#Return the interpolated filter.</span>
+        <span class="k">return</span> <span class="n">filt</span></div>
+    
+<div class="viewcode-block" id="Instrument.interpolate_efficiency"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Instrument.interpolate_efficiency">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        
+        <span class="sd">&quot;&quot;&quot;Method that interpolates the quantum efficiency.</span>
+
+<span class="sd">        :return: The efficiency of the instrument interpolated over the appropriate wavelenghts (in Angstroms).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+    
+        <span class="c1">#Interpolate the efficiency</span>
+        <span class="n">efficiency</span> <span class="o">=</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
+                                                  <span class="bp">self</span><span class="o">.</span><span class="n">sensitivity</span><span class="p">,</span>
+                                                  <span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">efficiency</span></div></div>
+
+
+<div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../../modules.html#APOETC.arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Object that represents the telescope used.</span>
+
+<span class="sd">    :param obs_name: The name of the observatory used, default to &#39;ARC 3.5m&#39;.</span>
+<span class="sd">    :type obs_name: str,optional</span>
+<span class="sd">    :param aperature: The diameter of the telescope used (in meters), default to 3.5.</span>
+<span class="sd">    :type aperature: float, optional</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">obs_name</span> <span class="o">=</span> <span class="s1">&#39;ARC 3.5m&#39;</span><span class="p">,</span><span class="n">aperature</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;The constructor of the Telescope class.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1">#Name of observatory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">obs_name</span> <span class="o">=</span> <span class="n">obs_name</span>
+
+        <span class="c1">#Aperature area</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">((</span><span class="n">aperature</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="c1">#pi r^2 #cm</span>
+
+        <span class="c1">#Throughput of telescope.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">throughput</span> <span class="o">=</span> <span class="mf">0.90</span> <span class="c1">#Random but reasonable number</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../../index.html">
+              <img class="logo" src="../../_static/3_5.JPG" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../../index.html">APOETC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../modules.html">Modules</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;None.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>
