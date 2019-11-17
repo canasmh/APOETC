@@ -7,22 +7,46 @@ from astropy.io import ascii
 from scipy.interpolate import InterpolatedUnivariateSpline
 
 class Instrument:
-    """This object represents the instrument used.
+    """
+    This object represents the instrument used.
+
+
+    Parameters
+    -----------
+    inst_name : str
+        The name of the isntrument used.
 
     Attributes
     -----------
     inst_name : str
-        THe name of the instrument used
-    :param inst_name: This is the name of the instrument used.
-    :type inst_name: str
+        The name of the instrument.
 
+    readout_noise : float
+        The readout noise of the instrument.
+
+    gain : float
+        The gain of the instrument.
+
+    sensitivity : arr
+        The quantum efficiency (per angstrom) of the instrument.
+
+    wavelength : arr
+        The wavelengths corresponding to the sensitivity attribute.
+
+    plate_scale : float
+        The plate scale of the instrument.
+
+    filters : list
+        The filters used by ARC. When using the filter method, the bandpass
     """
 
     def __init__(self, inst_name):
-        """The constructor for the Instrument class.
+        """
+        The constructor for the Instrument class.
 
         """
         # Path to the directory containing instrument data:
+        self.filter_range = None
         path_to_dir = dirname(abspath(__file__))+'/data/APO/'+inst_name
 
         #set attributes
@@ -44,37 +68,36 @@ class Instrument:
                              )[0][0] #gain
         #Quantum effiency of instrument
         self.sensitivity = ascii.read(path_to_dir+'/qe.dat')['col2']/100
+        self.filters ['U','B','V','R','I','gprime','iprime','rprime','uprime','zprime']
 
         #Wavelength of quantum efficiency
         self.wavelength = ascii.read(path_to_dir+'/qe.dat')['col1']*10
         self.plate_scale = np.array(ascii.read(path_to_dir+'/plate_scale.dat')
                                     )[0][0]
         
-    def filter(self, bandpass, Johnson = True, SDSS = False):
-        """Method that returns the transmission of specified filter.
+    def filter(self, filter):
+        """
+        Method that returns the transmission of specified filter.
 
-        :param bandpass: The bandpass of the filter used (i.e., 'U','B','V','R', or 'I').
-        :type bandpass: str
-        :param Johnson: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to True
-        :type Johnson: bool, optional
-        :param SDSS: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to False
-        :type SDSS: bool, optional
-        ...
-        ...
-        :return: The transmission of the filter interpolated over the bandpass. Also sets a filter_range attribute (Angstroms).
-        :rtype: Interpolated object.
+        The name of the filter used must match one the options in the filters attribute.
+
+        Parameters
+        ----------
+        filter : str
+            The name of the filter used (i.e., 'U','B','gprime', etc.).
+
         """
     
         #Define the path to the filter .dat files based on the type of filter 
         #used.
     
         if Johnson:
-            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filter/Johnson/'
+            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filters/'
         elif SDSS:
-            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filter/SDSS/'
+            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filters/'
     
         #Get the transmission and wavelength from the .dat file
-        filt_data = ascii.read(path_to_dir+bandpass+'.dat')
+        filt_data = ascii.read(path_to_dir+filter+'.dat')
             
         #Get the transmission and wavelength from the .dat file
     
@@ -86,7 +109,7 @@ class Instrument:
                                             filt_transmission,k=3)
 
         #Set the range of the filter as an object attribute.
-        setattr(Instrument,'filter_range',(filt_wavelength[0],filt_wavelength[-1]))
+        setattr(self,'filter_range',(filt_wavelength[0],filt_wavelength[-1]))
 
         #Return the interpolated filter.
         return filt
@@ -107,15 +130,32 @@ class Instrument:
 
 
 class Telescope:
-    """Object that represents the telescope used.
+    """
+    Object that represents the telescope used.
 
-    :param obs_name: The name of the observatory used, default to 'ARC 3.5m'.
-    :type obs_name: str,optional
-    :param aperature: The diameter of the telescope used (in meters), default to 3.5.
-    :type aperature: float, optional
+    For our purposes, this telescope really represents the Astrophysical Research Consortium 3.5m telescope
+    but we hope to make it more versatile in the future.
+
+    Parameters
+    -----------
+    obs_name : str, optional
+        The name of the observatory. Default is 'ARC 3.5m'.
+    mirror_diameter : float, optional
+        The diameter of the primary mirror in cgs. Default is 350 cm.
+
+    Attributes
+    -----------
+    obs_name : str
+        The name of the observatory. Default is 'ARC 3.5m'.
+    area : float
+        The light gathering area of the primary mirror.
+
+    throughput : float
+        The total throughput of the telescope. This is set to be 0.90.
+
     """
 
-    def __init__(self,obs_name = 'ARC 3.5m',aperature = 3.5):
+    def __init__(self,obs_name = 'ARC 3.5m',mirror_diameter = 350):
         """The constructor of the Telescope class.
         """
 
@@ -123,7 +163,7 @@ class Telescope:
         self.obs_name = obs_name
 
         #Aperature area
-        self.area = np.pi*((aperature*100)/2)**2 #pi r^2 #cm
+        self.area = np.pi*((mirror_diameter)/2)**2 #pi r^2 #cm
 
         #Throughput of telescope.
         self.throughput = 0.90 #Random but reasonable number
