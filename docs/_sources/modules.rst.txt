@@ -1,34 +1,39 @@
 Modules
-=============
+=======
 
 The ``arc`` module
 ------------------
 
-.. automodule:: APOETC.arc
-    :members:
-    :undoc-members:
-    :show-inheritance:
+Some text.
 
-``Instrument``
-*****************************
+Now let's take a look at the instrument class
+
+The ``arc.Instrument`` class
++++++++++++++++++++++++++++++
+
 .. autoclass:: arc.Instrument
     :members:
     :undoc-members:
-    :show-inheritance:
+    :show-inheritance: bysource
 
 
-``Telescope``
-*****************************
+And now the telescope class
+
+The ``arc.Telescope`` class
++++++++++++++++++++++++++++
+
 .. autoclass:: arc.Telescope
     :members:
     :undoc-members:
-    :show-inheritance:
+    :show-inheritance: bysource
 
 The ``signal_to_noise`` module
-------------------------------
+-------------------------------
+some text
 
 ``Sky``
-*****************************
+++++++++
+
 .. autoclass:: signal_to_noise.Sky
     :members:
     :undoc-members:
@@ -36,7 +41,8 @@ The ``signal_to_noise`` module
 
 
 ``Target``
-*****************************
++++++++++++
+
 .. autoclass:: signal_to_noise.Target
     :members:
     :undoc-members:
