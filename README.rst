@@ -15,6 +15,3 @@ Use the package manager `pip`_ to install APOETC. First, ``cd`` into the main di
 
 ``pip install ./``
 
-
-For an in depth tutorial, refer to the `documentation <https://canasmh.github.io/APOETC/>`_.
-
