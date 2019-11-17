@@ -1,5 +1,4 @@
 import ephem
-from arc import *
 import numpy as np
 
 def localtime_to_utc(local,mdt=True):
