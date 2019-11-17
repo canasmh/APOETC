@@ -1,0 +1,21 @@
+The ``signal_to_noise`` module
+==============================
+
+some text
+
+The ``Sky`` class
+-----------------
+
+.. autoclass:: signal_to_noise.Sky
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+
+The ``Target`` class
+--------------------
+
+.. autoclass:: signal_to_noise.Target
+    :members:
+    :undoc-members:
+    :show-inheritance:

@@ -39,16 +39,32 @@
 <span class="kn">from</span> <span class="nn">astropy.io</span> <span class="k">import</span> <span class="n">ascii</span>
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">InterpolatedUnivariateSpline</span>
 
-<div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../modules.html#arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
+<div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../arc.html#arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;This object represents the instrument used.</span>
 
-<span class="sd">    Attributes</span>
-<span class="sd">    -----------</span>
-<span class="sd">    inst_name : str</span>
-<span class="sd">        THe name of the instrument used</span>
-<span class="sd">    :param inst_name: This is the name of the instrument used.</span>
+<span class="sd">    :param inst_name: Name of the instrument used.</span>
 <span class="sd">    :type inst_name: str</span>
 
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ==========</span>
+<span class="sd">    inst_name : str</span>
+<span class="sd">        The name of the instrument.</span>
+
+<span class="sd">    readout_noise : float</span>
+<span class="sd">        The readout noise of the instrument.</span>
+
+<span class="sd">    gain : float</span>
+<span class="sd">        The gain of the instrument.</span>
+
+<span class="sd">    sensitivity : arr</span>
+<span class="sd">        The quantum efficiency (per angstrom) of the instrument.</span>
+
+<span class="sd">    wavelength : arr</span>
+<span class="sd">        The wavelengths corresponding to the sensitivity attribute.</span>
+
+<span class="sd">    plate_scale : float</span>
+<span class="sd">        The plate scale of the instrument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_name</span><span class="p">):</span>
@@ -83,7 +99,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">plate_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/plate_scale.dat&#39;</span><span class="p">)</span>
                                     <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         
-<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../modules.html#arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bandpass</span><span class="p">,</span> <span class="n">Johnson</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">SDSS</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../arc.html#arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bandpass</span><span class="p">,</span> <span class="n">Johnson</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">SDSS</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method that returns the transmission of specified filter.</span>
 
 <span class="sd">        :param bandpass: The bandpass of the filter used (i.e., &#39;U&#39;,&#39;B&#39;,&#39;V&#39;,&#39;R&#39;, or &#39;I&#39;).</span>
@@ -124,7 +140,7 @@
         <span class="c1">#Return the interpolated filter.</span>
         <span class="k">return</span> <span class="n">filt</span></div>
     
-<div class="viewcode-block" id="Instrument.interpolate_efficiency"><a class="viewcode-back" href="../modules.html#arc.Instrument.interpolate_efficiency">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Instrument.interpolate_efficiency"><a class="viewcode-back" href="../arc.html#arc.Instrument.interpolate_efficiency">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         
         <span class="sd">&quot;&quot;&quot;Method that interpolates the quantum efficiency.</span>
 
@@ -139,7 +155,7 @@
         <span class="k">return</span> <span class="n">efficiency</span></div></div>
 
 
-<div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../modules.html#arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
+<div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../arc.html#arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;Object that represents the telescope used.</span>
 
 <span class="sd">    :param obs_name: The name of the observatory used, default to &#39;ARC 3.5m&#39;.</span>
@@ -183,7 +199,9 @@
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About the Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signal_to_noise.html">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
 </ul>
 
 <div class="relations">

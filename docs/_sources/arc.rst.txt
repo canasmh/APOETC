@@ -1,0 +1,26 @@
+
+The ``arc`` module
+==================
+
+Some text.
+
+Now let's take a look at the instrument class
+
+The ``Instrument`` class
+------------------------
+
+.. autoclass:: arc.Instrument
+    :members:
+    :undoc-members:
+    :show-inheritance: bysource
+
+
+And now the telescope class
+
+The ``Telescope`` class
+---------------------------
+
+.. autoclass:: arc.Telescope
+    :members:
+    :undoc-members:
+    :show-inheritance: bysource
