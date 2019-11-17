@@ -34,9 +34,26 @@
 <span></span><span class="ch">#!/usr/bin/env python3</span>
 <span class="c1"># -*- coding: utf-8 -*-</span>
 
-<div class="viewcode-block" id="Sky"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Sky">[docs]</a><span class="k">class</span> <span class="nc">Sky</span><span class="p">:</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">ephem</span>
+<span class="kn">from</span> <span class="nn">tools</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">abspath</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lunar_phase</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="n">seeing</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">airmass</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">transmission</span> <span class="o">=</span> <span class="mf">0.90</span><span class="p">):</span>
+<div class="viewcode-block" id="Moon"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Moon">[docs]</a><span class="k">class</span> <span class="nc">Moon</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Function that calculates the position and emission of the moon.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    </span>
+
+
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">lunar_phase</span><span class="p">,</span> <span class="n">utc</span><span class="p">):</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lunar_phase</span> <span class="o">=</span> <span class="n">lunar_phase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">seeing</span> <span class="o">=</span> <span class="n">seeing</span>
@@ -45,7 +62,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">transmission</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">emission</span><span class="p">()</span>
 
-<div class="viewcode-block" id="Sky.transmission"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Sky.transmission">[docs]</a>    <span class="k">def</span> <span class="nf">transmission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Moon.transmission"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Moon.transmission">[docs]</a>    <span class="k">def</span> <span class="nf">transmission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">&lt;=</span> <span class="mf">1.25</span><span class="p">:</span>
             <span class="n">trans_file</span> <span class="o">=</span> <span class="s1">&#39;trans_1.txt&#39;</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">&lt;</span> <span class="mf">1.75</span> <span class="ow">and</span> <span class="n">airmass</span> <span class="o">&gt;</span> <span class="mf">1.25</span><span class="p">:</span>
@@ -60,7 +77,9 @@
                                                              <span class="p">,</span> <span class="n">transmission</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span> \
                                                              <span class="p">)</span></div>
 
-<div class="viewcode-block" id="Sky.emission"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Sky.emission">[docs]</a>    <span class="k">def</span> <span class="nf">emission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Moon.emission"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Moon.emission">[docs]</a>    <span class="k">def</span> <span class="nf">emission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;/data/Sky/&#39;</span>
+
         <span class="k">if</span> <span class="n">lunar_phase</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">:</span>
             <span class="n">emission_file</span> <span class="o">=</span> <span class="s1">&#39;moon_00.txt&#39;</span>
         <span class="k">elif</span> <span class="n">lunar_phase</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="ow">and</span> <span class="n">lunar_phase</span> <span class="o">&lt;</span> <span class="mf">0.75</span><span class="p">:</span>
@@ -68,7 +87,7 @@
         <span class="k">elif</span> <span class="n">lunar_phase</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
             <span class="n">emission_file</span> <span class="o">=</span> <span class="s1">&#39;moon_100.txt&#39;</span>
 
-        <span class="n">emission</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="s1">&#39;../data/sky/&#39;</span> <span class="o">+</span> <span class="n">emission_file</span><span class="p">)</span>
+        <span class="n">emission</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">path_to_dir</span> <span class="o">+</span> <span class="n">emission_file</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sky_emission</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span>
             <span class="n">emission</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">emission</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span></div></div>
 
@@ -97,32 +116,42 @@
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span>
+            <span class="n">coord</span><span class="p">,</span>
+            <span class="n">local_sidereal_time</span><span class="p">,</span>
+            <span class="n">MDT</span><span class="p">,</span>
             <span class="n">magnitude</span><span class="p">,</span>
             <span class="n">magsystem</span><span class="p">,</span>
             <span class="n">filter_range</span><span class="p">,</span>
             <span class="n">SED</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">temp</span><span class="o">=</span><span class="mi">5778</span>
     <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Creates an instance of the Target class.</span>
 
-<span class="sd">        Parameters:</span>
-<span class="sd">            magnitude : float</span>
-<span class="sd">                The magnitude of the star you wish to observe.</span>
-
-<span class="sd">            magsystem : obj</span>
-<span class="sd">                The magnitude system used in the above paramer.</span>
-
-<span class="sd">            filter_range : tuple</span>
-<span class="sd">                The range of the filter used to observe this target.</span>
-
-<span class="sd">            SED : obj (optional)</span>
-<span class="sd">                The spectral energy distribution of the target star.</span>
-<span class="sd">                Default is None.</span>
-
-<span class="sd">            temp : float (optional)</span>
-<span class="sd">                The temperature of the target star. This is used to create</span>
-<span class="sd">                a black body spectrum of the star.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="nb">min</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">MDT</span><span class="p">:</span>
+            <span class="n">UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">6</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">7</span>
+            <span class="sd">&quot;&quot;&quot;Creates an instance of the Target class.</span>
+<span class="sd">    </span>
+<span class="sd">            Parameters:</span>
+<span class="sd">                magnitude : float</span>
+<span class="sd">                    The magnitude of the star you wish to observe.</span>
+<span class="sd">    </span>
+<span class="sd">                magsystem : obj</span>
+<span class="sd">                    The magnitude system used in the above paramer.</span>
+<span class="sd">    </span>
+<span class="sd">                filter_range : tuple</span>
+<span class="sd">                    The range of the filter used to observe this target.</span>
+<span class="sd">    </span>
+<span class="sd">                SED : obj (optional)</span>
+<span class="sd">                    The spectral energy distribution of the target star.</span>
+<span class="sd">                    Default is None.</span>
+<span class="sd">    </span>
+<span class="sd">                temp : float (optional)</span>
+<span class="sd">                    The temperature of the target star. This is used to create</span>
+<span class="sd">                    a black body spectrum of the star.</span>
+<span class="sd">            &quot;&quot;&quot;</span>
 
         <span class="c1">#Use the specified magnitude system.</span>
         <span class="k">if</span> <span class="n">magsystem</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;vegamag&#39;</span><span class="p">:</span>
@@ -299,6 +328,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">About the Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../signal_to_noise.html">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 </ul>
 
 <div class="relations">

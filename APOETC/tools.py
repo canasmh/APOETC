@@ -25,7 +25,7 @@ def localtime_to_utc(local,mdt=True):
     #Separate hour and minute
     hour = int(time.split(':')[0])
     minute = int(time.split(':')[1])
-    seconds = int(time.split(':')[-1])
+    second = int(time.split(':')[-1])
 
     #separate the day
     year = int(date.split('/')[0])
@@ -36,15 +36,15 @@ def localtime_to_utc(local,mdt=True):
     if mdt:
         hour = hour + 6
 
-        if hour > 24
+        if hour > 24:
             day = day + 1
             hour = hour%24
     else:
         hour = hour + 7
 
-        if hour > 24
+        if hour > 24:
             day = int(day) + 1
-            hour = hour % 24
+            hour = hour%24
 
     return "{}/{}/{} {}:{}:{}".format(year,month,day,hour,minute,second)
 
@@ -79,7 +79,7 @@ def localtime_to_lst(local,
     #Separate hour and minute
     hour = int(time.split(':')[0])
     minute = int(time.split(':')[1])
-    seconds = int(time.split(':')[-1])
+    second = int(time.split(':')[-1])
 
     #separate the day
     year = int(date.split('/')[0])
@@ -90,13 +90,13 @@ def localtime_to_lst(local,
     if mdt:
         hour = hour + 6
 
-        if hour > 24
+        if hour > 24:
             day = day + 1
             hour = hour%24
     else:
         hour = hour + 7
 
-        if hour > 24
+        if hour > 24:
             day = int(day) + 1
             hour = hour % 24
 
@@ -115,7 +115,7 @@ def equatorial_to_horizontal(declination,
                              right_ascension,
                              local_sidereal_time,
                              observers_latitude = '32.7803'
-                             )
+                             ):
 
 
     """Converts from equatorial coordinate system to horizontal coordinate system.
@@ -164,20 +164,20 @@ def equatorial_to_horizontal(declination,
     lat = observers_latitude*(np.pi/180.)
 
     #Calculate altitude (Eq. 1.76)
-    sin_alt = m.sin(lat) * m.sin(dec) + m.cos(lat) * m.cos(dec) * m.cos(lst - ra)
+    sin_alt = np.sin(lat) * np.sin(dec) + np.cos(lat) * np.cos(dec) * np.cos(lst - ra)
 
-    alt = m.asin(sin_alt)
-    alt_deg = m.degrees(alt)
+    alt = np.asin(sin_alt)
+    alt_deg = np.degrees(alt)
 
     #Calculate azimuth Eq. (1.77)
-    sin_az = m.cos(dec)*m.sin(lst - ra)/m.cos(alt)
+    sin_az = np.cos(dec)*np.sin(lst - ra)/np.cos(alt)
 
     # Eq. (1.78)
-    cos_az = (m.sin(lat) * m.cos(dec) * m.cos(lst - ra) - m.cos(lat) * m.sin(dec)) / m.cos(alt)
+    cos_az = (np.sin(lat) * np.cos(dec) * np.cos(lst - ra) - np.cos(lat) * np.sin(dec)) / np.cos(alt)
 
     #Take care of quadrant ambiguity.
     az = np.arctan2(sin_az, cos_az)
-    az_deg = m.degrees(az) % 360
+    az_deg = mnpdegrees(az) % 360
 
     return "A = {} deg, h = {} deg".format(az_deg, alt_deg)
 

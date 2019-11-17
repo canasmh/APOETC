@@ -93,32 +93,32 @@ class Target:
             temp=5778
     ):
 
-    hour = time.split(':')[0]
-    min = time.split(':')[1]
-    if MDT:
-        UTC = time.split(':')[0] + 6
-    else:
-        UTC = time.split(':')[1] + 7
-        """Creates an instance of the Target class.
-
-        Parameters:
-            magnitude : float
-                The magnitude of the star you wish to observe.
-
-            magsystem : obj
-                The magnitude system used in the above paramer.
-
-            filter_range : tuple
-                The range of the filter used to observe this target.
-
-            SED : obj (optional)
-                The spectral energy distribution of the target star.
-                Default is None.
-
-            temp : float (optional)
-                The temperature of the target star. This is used to create
-                a black body spectrum of the star.
-        """
+        hour = time.split(':')[0]
+        min = time.split(':')[1]
+        if MDT:
+            UTC = time.split(':')[0] + 6
+        else:
+            UTC = time.split(':')[1] + 7
+            """Creates an instance of the Target class.
+    
+            Parameters:
+                magnitude : float
+                    The magnitude of the star you wish to observe.
+    
+                magsystem : obj
+                    The magnitude system used in the above paramer.
+    
+                filter_range : tuple
+                    The range of the filter used to observe this target.
+    
+                SED : obj (optional)
+                    The spectral energy distribution of the target star.
+                    Default is None.
+    
+                temp : float (optional)
+                    The temperature of the target star. This is used to create
+                    a black body spectrum of the star.
+            """
 
         #Use the specified magnitude system.
         if magsystem.lower() == 'vegamag':

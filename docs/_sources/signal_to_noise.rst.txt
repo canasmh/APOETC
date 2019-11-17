@@ -3,10 +3,10 @@ The ``signal_to_noise`` module
 
 some text
 
-The ``Sky`` class
------------------
+The ``Moon`` class
+------------------
 
-.. autoclass:: signal_to_noise.Sky
+.. autoclass:: signal_to_noise.Moon
     :members:
     :undoc-members:
     :show-inheritance:

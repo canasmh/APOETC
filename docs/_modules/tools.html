@@ -1,0 +1,308 @@
+
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <title>tools &#8212; APOETC 0.0.1 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="../_static/language_data.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for tools</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">ephem</span>
+<span class="kn">from</span> <span class="nn">arc</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<div class="viewcode-block" id="localtime_to_utc"><a class="viewcode-back" href="../tools.html#tools.localtime_to_utc">[docs]</a><span class="k">def</span> <span class="nf">localtime_to_utc</span><span class="p">(</span><span class="n">local</span><span class="p">,</span><span class="n">mdt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts local time at APO to UTC</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local : str</span>
+<span class="sd">        Local time and date given in the following format: &#39;YYYY/MM/DD H:M:S.&#39;</span>
+<span class="sd">    mdt : bool, optional</span>
+<span class="sd">        Mountain Daylight time. Default is True</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    utc : str</span>
+<span class="sd">        Local time and date converted to Coordinated Universal Time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#Separate time and date</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">splt</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1">#Separate hour and minute</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#separate the day</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#Daylight savings time makes it UTC-6:00</span>
+    <span class="k">if</span> <span class="n">mdt</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">+</span> <span class="mi">6</span>
+
+        <span class="k">if</span> <span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="n">day</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span><span class="o">%</span><span class="mi">24</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">+</span> <span class="mi">7</span>
+
+        <span class="k">if</span> <span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span><span class="o">%</span><span class="mi">24</span>
+
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="localtime_to_lst"><a class="viewcode-back" href="../tools.html#tools.localtime_to_lst">[docs]</a><span class="k">def</span> <span class="nf">localtime_to_lst</span><span class="p">(</span><span class="n">local</span><span class="p">,</span>
+                     <span class="n">mdt</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                     <span class="n">latitude</span><span class="o">=</span><span class="s1">&#39;32.7803&#39;</span><span class="p">,</span>
+                     <span class="n">longitude</span><span class="o">=</span><span class="s1">&#39;-108.8203&#39;</span>
+                     <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts local time at APO to local sidereal time</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    local : str</span>
+<span class="sd">        Local time and date given in the following format: &#39;YYYY/MM/DD H:M:S.&#39;</span>
+<span class="sd">    mdt : bool, optional</span>
+<span class="sd">        Mountain Daylight time. Default is True</span>
+<span class="sd">    latitude : str</span>
+<span class="sd">        Latitude of site. Set to 32.7803</span>
+<span class="sd">    longitude : str</span>
+<span class="sd">        Longitude of site. Set to -108.8203</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    lst : str</span>
+<span class="sd">        Local time converted to local sidereal time.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#Separate time and date</span>
+    <span class="n">time</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">splt</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">date</span> <span class="o">=</span> <span class="n">local</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="c1">#Separate hour and minute</span>
+    <span class="n">hour</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">minute</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">second</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#separate the day</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">])</span>
+    <span class="n">month</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span>
+    <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">date</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+
+    <span class="c1">#Daylight savings time makes it UTC-6:00</span>
+    <span class="k">if</span> <span class="n">mdt</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">+</span> <span class="mi">6</span>
+
+        <span class="k">if</span> <span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="n">day</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span><span class="o">%</span><span class="mi">24</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">+</span> <span class="mi">7</span>
+
+        <span class="k">if</span> <span class="n">hour</span> <span class="o">&gt;</span> <span class="mi">24</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">day</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">hour</span> <span class="o">=</span> <span class="n">hour</span> <span class="o">%</span> <span class="mi">24</span>
+
+    <span class="n">utc</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2">/</span><span class="si">{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">:</span><span class="si">{}</span><span class="s2">&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">year</span><span class="p">,</span><span class="n">month</span><span class="p">,</span><span class="n">day</span><span class="p">,</span><span class="n">hour</span><span class="p">,</span><span class="n">minute</span><span class="p">,</span><span class="n">second</span><span class="p">)</span>
+
+    <span class="c1">#ephem is a great package for getting things like local sidereal time, coordinate conversions, etc.</span>
+    <span class="n">apo</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
+    <span class="n">apo</span><span class="o">.</span><span class="n">lat</span><span class="p">,</span> <span class="n">apo</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">latitude</span><span class="p">,</span> <span class="n">longitude</span>
+    <span class="n">apo</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="n">utc</span>
+
+    <span class="c1">#print the sidereal_time</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">apo</span><span class="o">.</span><span class="n">sidereal_time</span><span class="p">())</span></div>
+
+
+<div class="viewcode-block" id="equatorial_to_horizontal"><a class="viewcode-back" href="../tools.html#tools.equatorial_to_horizontal">[docs]</a><span class="k">def</span> <span class="nf">equatorial_to_horizontal</span><span class="p">(</span><span class="n">declination</span><span class="p">,</span>
+                             <span class="n">right_ascension</span><span class="p">,</span>
+                             <span class="n">local_sidereal_time</span><span class="p">,</span>
+                             <span class="n">observers_latitude</span> <span class="o">=</span> <span class="s1">&#39;32.7803&#39;</span>
+                             <span class="p">):</span>
+
+
+    <span class="sd">&quot;&quot;&quot;Converts from equatorial coordinate system to horizontal coordinate system.</span>
+<span class="sd">    </span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    declination : str</span>
+<span class="sd">        Declination of the target in sexagesimal format &#39;dd:mm:ss.s&#39;.</span>
+<span class="sd">    right_ascension : str</span>
+<span class="sd">        Right ascension of the target in sexagesimal format &#39;hh:mm:ss&#39;.</span>
+<span class="sd">    local_sidereal_time : str</span>
+<span class="sd">        The local sidereal time which you wish to compute the horizontal coordinates for. Given in Military format.</span>
+<span class="sd">    observers_latitude : str, optional</span>
+<span class="sd">        The altitude of the observatory. Defaults to 32.7803.</span>
+
+<span class="sd">    Input: dec in degrees (decimal), RA in hours (decimal),</span>
+<span class="sd">    LST in hrs (decimal), observers altitude in degrees (decimal),</span>
+
+<span class="sd">    Output: The azimuth (A) and altitude (h) of star</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="c1">#Split the Right Ascension into it&#39;s components.</span>
+    <span class="n">ra_hour</span> <span class="o">=</span> <span class="n">right_ascension</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">ra_minute</span> <span class="o">=</span> <span class="n">right_ascension</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">ra_second</span> <span class="o">=</span> <span class="n">right_ascension</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="c1">#Convert Right Ascension into radians.</span>
+    <span class="n">ra</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">ra_hour</span><span class="p">)</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">ra_minute</span><span class="p">)</span><span class="o">/</span><span class="mf">60.</span> <span class="o">+</span> <span class="nb">int</span><span class="p">(</span><span class="n">ra_second</span><span class="p">)</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">12.</span><span class="p">)</span>
+
+
+    <span class="c1">#Repeat for declination</span>
+    <span class="n">dec_hour</span> <span class="o">=</span> <span class="n">declination</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">dec_minute</span> <span class="o">=</span> <span class="n">declination</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">dec_second</span> <span class="o">=</span> <span class="n">declination</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">dec</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">dec_hour</span><span class="p">)</span><span class="o">+</span><span class="nb">int</span><span class="p">(</span><span class="n">dec_minute</span><span class="p">)</span><span class="o">/</span><span class="mf">60.</span><span class="o">+</span><span class="nb">int</span><span class="p">(</span><span class="n">dec_second</span><span class="p">)</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span> <span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">180</span><span class="p">)</span>
+
+    <span class="c1">#Repeat for local sidereal time</span>
+    <span class="n">lst_hour</span> <span class="o">=</span> <span class="n">local_sidereal_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+    <span class="n">lst_minute</span> <span class="o">=</span> <span class="n">local_sidereal_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">lst_second</span> <span class="o">=</span> <span class="n">local_sidereal_time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">2</span><span class="p">]</span>
+
+    <span class="n">lst</span> <span class="o">=</span> <span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">lst_hour</span><span class="p">)</span><span class="o">+</span><span class="nb">int</span><span class="p">(</span><span class="n">lst_minute</span><span class="p">)</span><span class="o">/</span><span class="mf">60.</span><span class="o">+</span><span class="nb">int</span><span class="p">(</span><span class="n">lst_second</span><span class="p">)</span><span class="o">/</span><span class="mf">3600.</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">12</span><span class="p">)</span>
+
+    <span class="c1">#And lastly for the latitude</span>
+    <span class="n">lat</span> <span class="o">=</span> <span class="n">observers_latitude</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">180.</span><span class="p">)</span>
+
+    <span class="c1">#Calculate altitude (Eq. 1.76)</span>
+    <span class="n">sin_alt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lst</span> <span class="o">-</span> <span class="n">ra</span><span class="p">)</span>
+
+    <span class="n">alt</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">asin</span><span class="p">(</span><span class="n">sin_alt</span><span class="p">)</span>
+    <span class="n">alt_deg</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">alt</span><span class="p">)</span>
+
+    <span class="c1">#Calculate azimuth Eq. (1.77)</span>
+    <span class="n">sin_az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lst</span> <span class="o">-</span> <span class="n">ra</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alt</span><span class="p">)</span>
+
+    <span class="c1"># Eq. (1.78)</span>
+    <span class="n">cos_az</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">dec</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lst</span> <span class="o">-</span> <span class="n">ra</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">lat</span><span class="p">)</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">dec</span><span class="p">))</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">alt</span><span class="p">)</span>
+
+    <span class="c1">#Take care of quadrant ambiguity.</span>
+    <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sin_az</span><span class="p">,</span> <span class="n">cos_az</span><span class="p">)</span>
+    <span class="n">az_deg</span> <span class="o">=</span> <span class="n">mnpdegrees</span><span class="p">(</span><span class="n">az</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
+
+    <span class="k">return</span> <span class="s2">&quot;A = </span><span class="si">{}</span><span class="s2"> deg, h = </span><span class="si">{}</span><span class="s2"> deg&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">az_deg</span><span class="p">,</span> <span class="n">alt_deg</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="dec_to_sexa"><a class="viewcode-back" href="../tools.html#tools.dec_to_sexa">[docs]</a><span class="k">def</span> <span class="nf">dec_to_sexa</span><span class="p">(</span><span class="n">decimal</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">round_value</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+    <span class="sd">&#39;&#39;&#39;</span>
+<span class="sd">    Inputs:</span>
+<span class="sd">        Decimal is the floating value of the number you want to convert</span>
+<span class="sd">        into sexagesimal form. It must either be in hours or degrees.</span>
+<span class="sd">        Key is a string, either &quot;h&quot; for hour or &quot;d&quot; for degrees.</span>
+<span class="sd">        Round_value is optional, default set to 1 decimal place.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        The number in sexagesimal form</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+    <span class="n">dec_unit</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">decimal</span><span class="p">)</span>
+    <span class="n">dec_minute</span> <span class="o">=</span> <span class="p">(</span><span class="nb">abs</span><span class="p">(</span><span class="n">decimal</span><span class="p">)</span> <span class="o">-</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">decimal</span><span class="p">)))</span> <span class="o">*</span> <span class="mi">60</span>
+    <span class="n">dec_sec</span> <span class="o">=</span> <span class="p">(</span><span class="n">dec_minute</span> <span class="o">-</span> <span class="nb">int</span><span class="p">(</span><span class="n">dec_minute</span><span class="p">))</span> <span class="o">*</span> <span class="mi">60</span>
+
+    <span class="k">return</span> <span class="s2">&quot;</span><span class="si">{}{}</span><span class="s2"> </span><span class="si">{}</span><span class="s2">m </span><span class="si">{}</span><span class="s2">s&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">dec_unit</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="nb">int</span><span class="p">(</span><span class="n">dec_minute</span><span class="p">),</span> <span class="nb">round</span><span class="p">(</span><span class="n">dec_sec</span><span class="p">,</span> <span class="n">round_value</span><span class="p">))</span></div>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/3_5.JPG" alt="Logo"/>
+            </a></p>
+<h1 class="logo"><a href="../index.html">APOETC</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../intro.html">About the Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../signal_to_noise.html">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" />
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;None.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

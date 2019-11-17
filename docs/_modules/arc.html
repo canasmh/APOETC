@@ -40,14 +40,17 @@
 <span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">InterpolatedUnivariateSpline</span>
 
 <div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../arc.html#arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;This object represents the instrument used.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    This object represents the instrument used.</span>
 
-<span class="sd">    :param inst_name: Name of the instrument used.</span>
-<span class="sd">    :type inst_name: str</span>
 
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    inst_name : str</span>
+<span class="sd">        The name of the isntrument used.</span>
 
 <span class="sd">    Attributes</span>
-<span class="sd">    ==========</span>
+<span class="sd">    -----------</span>
 <span class="sd">    inst_name : str</span>
 <span class="sd">        The name of the instrument.</span>
 
@@ -65,13 +68,18 @@
 
 <span class="sd">    plate_scale : float</span>
 <span class="sd">        The plate scale of the instrument.</span>
+
+<span class="sd">    filters : list</span>
+<span class="sd">        The filters used by ARC. When using the filter method, the bandpass</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;The constructor for the Instrument class.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        The constructor for the Instrument class.</span>
 
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Path to the directory containing instrument data:</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filter_range</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;/data/APO/&#39;</span><span class="o">+</span><span class="n">inst_name</span>
 
         <span class="c1">#set attributes</span>
@@ -93,37 +101,36 @@
                              <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="c1">#gain</span>
         <span class="c1">#Quantum effiency of instrument</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">sensitivity</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/qe.dat&#39;</span><span class="p">)[</span><span class="s1">&#39;col2&#39;</span><span class="p">]</span><span class="o">/</span><span class="mi">100</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">filters</span> <span class="p">[</span><span class="s1">&#39;U&#39;</span><span class="p">,</span><span class="s1">&#39;B&#39;</span><span class="p">,</span><span class="s1">&#39;V&#39;</span><span class="p">,</span><span class="s1">&#39;R&#39;</span><span class="p">,</span><span class="s1">&#39;I&#39;</span><span class="p">,</span><span class="s1">&#39;gprime&#39;</span><span class="p">,</span><span class="s1">&#39;iprime&#39;</span><span class="p">,</span><span class="s1">&#39;rprime&#39;</span><span class="p">,</span><span class="s1">&#39;uprime&#39;</span><span class="p">,</span><span class="s1">&#39;zprime&#39;</span><span class="p">]</span>
 
         <span class="c1">#Wavelength of quantum efficiency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/qe.dat&#39;</span><span class="p">)[</span><span class="s1">&#39;col1&#39;</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">plate_scale</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="s1">&#39;/plate_scale.dat&#39;</span><span class="p">)</span>
                                     <span class="p">)[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
         
-<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../arc.html#arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bandpass</span><span class="p">,</span> <span class="n">Johnson</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">SDSS</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Method that returns the transmission of specified filter.</span>
+<div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../arc.html#arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Method that returns the transmission of specified filter.</span>
 
-<span class="sd">        :param bandpass: The bandpass of the filter used (i.e., &#39;U&#39;,&#39;B&#39;,&#39;V&#39;,&#39;R&#39;, or &#39;I&#39;).</span>
-<span class="sd">        :type bandpass: str</span>
-<span class="sd">        :param Johnson: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to True</span>
-<span class="sd">        :type Johnson: bool, optional</span>
-<span class="sd">        :param SDSS: If true, then the bandpass is referring to the Johnson-Cousin filters. Defaults to False</span>
-<span class="sd">        :type SDSS: bool, optional</span>
-<span class="sd">        ...</span>
-<span class="sd">        ...</span>
-<span class="sd">        :return: The transmission of the filter interpolated over the bandpass. Also sets a filter_range attribute (Angstroms).</span>
-<span class="sd">        :rtype: Interpolated object.</span>
+<span class="sd">        The name of the filter used must match one the options in the filters attribute.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        filter : str</span>
+<span class="sd">            The name of the filter used (i.e., &#39;U&#39;,&#39;B&#39;,&#39;gprime&#39;, etc.).</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
     
         <span class="c1">#Define the path to the filter .dat files based on the type of filter </span>
         <span class="c1">#used.</span>
     
         <span class="k">if</span> <span class="n">Johnson</span><span class="p">:</span>
-            <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/Filter/Johnson/&#39;</span>
+            <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/Filters/&#39;</span>
         <span class="k">elif</span> <span class="n">SDSS</span><span class="p">:</span>
-            <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/Filter/SDSS/&#39;</span>
+            <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/Filters/&#39;</span>
     
         <span class="c1">#Get the transmission and wavelength from the .dat file</span>
-        <span class="n">filt_data</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="n">bandpass</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span><span class="p">)</span>
+        <span class="n">filt_data</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_dir</span><span class="o">+</span><span class="nb">filter</span><span class="o">+</span><span class="s1">&#39;.dat&#39;</span><span class="p">)</span>
             
         <span class="c1">#Get the transmission and wavelength from the .dat file</span>
     
@@ -135,7 +142,7 @@
                                             <span class="n">filt_transmission</span><span class="p">,</span><span class="n">k</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
 
         <span class="c1">#Set the range of the filter as an object attribute.</span>
-        <span class="nb">setattr</span><span class="p">(</span><span class="n">Instrument</span><span class="p">,</span><span class="s1">&#39;filter_range&#39;</span><span class="p">,(</span><span class="n">filt_wavelength</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">filt_wavelength</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="s1">&#39;filter_range&#39;</span><span class="p">,(</span><span class="n">filt_wavelength</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">filt_wavelength</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
 
         <span class="c1">#Return the interpolated filter.</span>
         <span class="k">return</span> <span class="n">filt</span></div>
@@ -156,15 +163,44 @@
 
 
 <div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../arc.html#arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Object that represents the telescope used.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Object that represents the telescope used.</span>
 
-<span class="sd">    :param obs_name: The name of the observatory used, default to &#39;ARC 3.5m&#39;.</span>
-<span class="sd">    :type obs_name: str,optional</span>
-<span class="sd">    :param aperature: The diameter of the telescope used (in meters), default to 3.5.</span>
-<span class="sd">    :type aperature: float, optional</span>
+<span class="sd">    For our purposes, this telescope really represents the Astrophysical Research Consortium 3.5m telescope</span>
+<span class="sd">    but we hope to make it more versatile in the future.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    obs_name : str, optional</span>
+<span class="sd">        The name of the observatory. Default is &#39;ARC 3.5m&#39;.</span>
+<span class="sd">    mirror_diameter : float, optional</span>
+<span class="sd">        The diameter of the primary mirror in cgs. Default is 350 cm.</span>
+<span class="sd">    coord : tuple, optional</span>
+<span class="sd">        The latitude and longitude of the observatory. Default set to APO</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    -----------</span>
+<span class="sd">    obs_name : str</span>
+<span class="sd">        The name of the observatory. Default is &#39;ARC 3.5m&#39;.</span>
+<span class="sd">    area : float</span>
+<span class="sd">        The light gathering area of the primary mirror.</span>
+
+<span class="sd">    throughput : float</span>
+<span class="sd">        The total throughput of the telescope. This is set to be 0.90.</span>
+
+<span class="sd">    latitude : str</span>
+<span class="sd">        Latitude of the observatory. Defaults to 32.7803.</span>
+
+<span class="sd">    longitude : str</span>
+<span class="sd">        Longitude of the observatory. Defaults to -105.8203</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">obs_name</span> <span class="o">=</span> <span class="s1">&#39;ARC 3.5m&#39;</span><span class="p">,</span><span class="n">aperature</span> <span class="o">=</span> <span class="mf">3.5</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">obs_name</span> <span class="o">=</span> <span class="s1">&#39;ARC 3.5m&#39;</span><span class="p">,</span>
+                 <span class="n">mirror_diameter</span> <span class="o">=</span> <span class="mi">350</span><span class="p">,</span>
+                 <span class="n">coord</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;32.7803&#39;</span><span class="p">,</span><span class="s1">&#39;-105.8203&#39;</span><span class="p">]</span>
+                 <span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;The constructor of the Telescope class.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
@@ -172,10 +208,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">obs_name</span> <span class="o">=</span> <span class="n">obs_name</span>
 
         <span class="c1">#Aperature area</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">((</span><span class="n">aperature</span><span class="o">*</span><span class="mi">100</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="c1">#pi r^2 #cm</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">*</span><span class="p">((</span><span class="n">mirror_diameter</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="c1">#pi r^2 #cm</span>
 
         <span class="c1">#Throughput of telescope.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">throughput</span> <span class="o">=</span> <span class="mf">0.90</span> <span class="c1">#Random but reasonable number</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">throughput</span> <span class="o">=</span> <span class="mf">0.90</span> <span class="c1">#Random but reasonable number</span>
+
+        <span class="c1">#Latitude and longitude of the observatory</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">longitude</span> <span class="o">=</span> <span class="n">coord</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span></div>
 </pre></div>
 
           </div>
@@ -202,6 +242,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">About the Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../signal_to_noise.html">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tools.html">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples.html">Examples</a></li>
 </ul>
 
 <div class="relations">

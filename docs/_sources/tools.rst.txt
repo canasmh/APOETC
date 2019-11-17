@@ -1,0 +1,9 @@
+The ``tools`` module
+====================
+
+some text.
+
+.. automodule:: tools
+   :members:
+   :undoc-members:
+   :show-inheritance: bysource

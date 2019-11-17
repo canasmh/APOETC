@@ -18,4 +18,5 @@ Welcome to the documentation page for APOETC (Apache Point Observatory Exposure 
    intro
    arc
    signal_to_noise
-
+   tools
+   examples

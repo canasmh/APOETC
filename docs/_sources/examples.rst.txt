@@ -1,4 +1,58 @@
 Examples
 ========
 
-Let's run through a few examples so that 
+Let's run through an example so that you get a better understanding of the way ``APOETC`` works.
+
+The Arctic Instrument
+---------------------
+Unfortunately, the only instrument that works in this program is the Arctic instrument, though we hope to change that very soon. Anyways, lets get started and see how we would calculate an exposure time with arctic given a desired signal to noise ratio.
+
+
+.. code:: python
+   
+    #First import the modules
+    from APOETC import *
+
+    #You might want to import matplotlib and numpy, just in case.
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    #Define the instrument you're using.
+    instrument = arc.Instrument('Arctic')
+
+    #Define the telescope. Default is 'ARC 3.5m'.
+    telescope = arc.Telescope()
+
+    #Let's say we are only interested in the V band.
+    filt = instrument.filter('V')
+
+The filter module returns the Johnson-Cousin V band filter interpolated. It also defines a new attribute called
+filter_range.
+
+.. Warning::
+
+    Python has a built-in function called filter. Avoid using that variable.
+
+You can plot the filter profile by doing the following:
+
+.. code:: python
+
+    #Set xmin to be the lower limit of the filter range
+    #and xmax to be the upper limit. 100 is just a random
+    #number used. You can space the grid out how you please.
+    #I recommend being consistent though.
+    x = np.linspace(filter_range[0],filter_range[1],100)
+    plt.plot(x,filt(x))
+    plt.ylim(0,1)
+    plt.xlim(filter_range[0],filter_range[1])
+    plt.xlabel('Wavelength (Angstroms)')
+    plt.ylabel('Transmission')
+    plt.show
+
+Notice that the default units for wavelength is Angstroms. That should be consistent through out the whole package.
+
+If you are unsure how scipy's UnivariateSpline works you might want to take a look at their `documentation <https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.UnivariateSpline.html>`_.
+
+It might also be handy to go ahead and interpolate the efficiency by using the ``Instrument.interpolate_efficiency`` method.
+
+

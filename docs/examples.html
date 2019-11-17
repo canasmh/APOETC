@@ -14,6 +14,7 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="The tools module" href="tools.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -32,7 +33,51 @@
             
   <div class="section" id="examples">
 <h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline">¶</a></h1>
-<p>Let’s run through a few examples so that</p>
+<p>Let’s run through an example so that you get a better understanding of the way <code class="docutils literal notranslate"><span class="pre">APOETC</span></code> works.</p>
+<div class="section" id="the-arctic-instrument">
+<h2>The Arctic Instrument<a class="headerlink" href="#the-arctic-instrument" title="Permalink to this headline">¶</a></h2>
+<p>Unfortunately, the only instrument that works in this program is the Arctic instrument, though we hope to change that very soon. Anyways, lets get started and see how we would calculate an exposure time with arctic given a desired signal to noise ratio.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#First import the modules</span>
+<span class="kn">from</span> <span class="nn">APOETC</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1">#You might want to import matplotlib and numpy, just in case.</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="kn">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="kn">as</span> <span class="nn">np</span>
+
+<span class="c1">#Define the instrument you&#39;re using.</span>
+<span class="n">instrument</span> <span class="o">=</span> <span class="n">arc</span><span class="o">.</span><span class="n">Instrument</span><span class="p">(</span><span class="s1">&#39;Arctic&#39;</span><span class="p">)</span>
+
+<span class="c1">#Define the telescope. Default is &#39;ARC 3.5m&#39;.</span>
+<span class="n">telescope</span> <span class="o">=</span> <span class="n">arc</span><span class="o">.</span><span class="n">Telescope</span><span class="p">()</span>
+
+<span class="c1">#Let&#39;s say we are only interested in the V band.</span>
+<span class="n">filt</span> <span class="o">=</span> <span class="n">instrument</span><span class="o">.</span><span class="n">filter</span><span class="p">(</span><span class="s1">&#39;V&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The filter module returns the Johnson-Cousin V band filter interpolated. It also defines a new attribute called
+filter_range.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Python has a built-in function called filter. Avoid using that variable.</p>
+</div>
+<p>You can plot the filter profile by doing the following:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="c1">#Set xmin to be the lower limit of the filter range</span>
+<span class="c1">#and xmax to be the upper limit. 100 is just a random</span>
+<span class="c1">#number used. You can space the grid out how you please.</span>
+<span class="c1">#I recommend being consistent though.</span>
+<span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">filter_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">filter_range</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span><span class="mi">100</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">filt</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlim</span><span class="p">(</span><span class="n">filter_range</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span><span class="n">filter_range</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="s1">&#39;Wavelength (Angstroms)&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s1">&#39;Transmission&#39;</span><span class="p">)</span>
+<span class="n">plt</span><span class="o">.</span><span class="n">show</span>
+</pre></div>
+</div>
+<p>Notice that the default units for wavelength is Angstroms. That should be consistent through out the whole package.</p>
+<p>If you are unsure how scipy’s UnivariateSpline works you might want to take a look at their <a class="reference external" href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.UnivariateSpline.html">documentation</a>.</p>
+<p>It might also be handy to go ahead and interpolate the efficiency by using the <code class="docutils literal notranslate"><span class="pre">Instrument.interpolate_efficiency</span></code> method.</p>
+</div>
 </div>
 
 
@@ -56,16 +101,22 @@
 
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
-<ul>
+<ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">About the Package</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signal_to_noise.html">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools.html">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#the-arctic-instrument">The Arctic Instrument</a></li>
+</ul>
+</li>
 </ul>
 
 <div class="relations">
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="tools.html" title="previous chapter">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
   </ul></li>
 </ul>
 </div>
