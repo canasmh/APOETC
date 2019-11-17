@@ -68,7 +68,6 @@ class Instrument:
                              )[0][0] #gain
         #Quantum effiency of instrument
         self.sensitivity = ascii.read(path_to_dir+'/qe.dat')['col2']/100
-        self.filters ['U','B','V','R','I','gprime','iprime','rprime','uprime','zprime']
 
         #Wavelength of quantum efficiency
         self.wavelength = ascii.read(path_to_dir+'/qe.dat')['col1']*10
@@ -90,11 +89,8 @@ class Instrument:
     
         #Define the path to the filter .dat files based on the type of filter 
         #used.
-    
-        if Johnson:
-            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filters/'
-        elif SDSS:
-            path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filters/'
+
+        path_to_dir = dirname(abspath(__file__)) + '/data/APO/Filters/'
     
         #Get the transmission and wavelength from the .dat file
         filt_data = ascii.read(path_to_dir+filter+'.dat')

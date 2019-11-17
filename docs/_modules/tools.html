@@ -32,11 +32,12 @@
             
   <h1>Source code for tools</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">ephem</span>
-<span class="kn">from</span> <span class="nn">arc</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <div class="viewcode-block" id="localtime_to_utc"><a class="viewcode-back" href="../tools.html#tools.localtime_to_utc">[docs]</a><span class="k">def</span> <span class="nf">localtime_to_utc</span><span class="p">(</span><span class="n">local</span><span class="p">,</span><span class="n">mdt</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts local time at APO to UTC</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Converts local time at APO to UTC</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -86,7 +87,9 @@
                      <span class="n">latitude</span><span class="o">=</span><span class="s1">&#39;32.7803&#39;</span><span class="p">,</span>
                      <span class="n">longitude</span><span class="o">=</span><span class="s1">&#39;-108.8203&#39;</span>
                      <span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Converts local time at APO to local sidereal time</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Converts local time at APO to local sidereal time</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -151,7 +154,9 @@
                              <span class="p">):</span>
 
 
-    <span class="sd">&quot;&quot;&quot;Converts from equatorial coordinate system to horizontal coordinate system.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">    Converts from equatorial coordinate system to horizontal coordinate system.</span>
 <span class="sd">    </span>
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
@@ -164,10 +169,10 @@
 <span class="sd">    observers_latitude : str, optional</span>
 <span class="sd">        The altitude of the observatory. Defaults to 32.7803.</span>
 
-<span class="sd">    Input: dec in degrees (decimal), RA in hours (decimal),</span>
-<span class="sd">    LST in hrs (decimal), observers altitude in degrees (decimal),</span>
-
-<span class="sd">    Output: The azimuth (A) and altitude (h) of star</span>
+<span class="sd">    Return</span>
+<span class="sd">    -------</span>
+<span class="sd">    az, alt : tuple</span>
+<span class="sd">        The azimuth and altitude based off the equatorial coordinates provided.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="c1">#Split the Right Ascension into it&#39;s components.</span>
@@ -212,7 +217,7 @@
     <span class="n">az</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arctan2</span><span class="p">(</span><span class="n">sin_az</span><span class="p">,</span> <span class="n">cos_az</span><span class="p">)</span>
     <span class="n">az_deg</span> <span class="o">=</span> <span class="n">mnpdegrees</span><span class="p">(</span><span class="n">az</span><span class="p">)</span> <span class="o">%</span> <span class="mi">360</span>
 
-    <span class="k">return</span> <span class="s2">&quot;A = </span><span class="si">{}</span><span class="s2"> deg, h = </span><span class="si">{}</span><span class="s2"> deg&quot;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">az_deg</span><span class="p">,</span> <span class="n">alt_deg</span><span class="p">)</span></div>
+    <span class="k">return</span> <span class="n">az_deg</span><span class="p">,</span> <span class="n">alt_deg</span></div>
 
 
 <div class="viewcode-block" id="dec_to_sexa"><a class="viewcode-back" href="../tools.html#tools.dec_to_sexa">[docs]</a><span class="k">def</span> <span class="nf">dec_to_sexa</span><span class="p">(</span><span class="n">decimal</span><span class="p">,</span> <span class="n">key</span><span class="p">,</span> <span class="n">round_value</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>

@@ -14,7 +14,7 @@ The APOExptime package can be found our `github page <https://github.com/APOExpo
 
 ``$ pip install ./``
 
-.. Warning::
+.. Note::
    
    You must have the following packages in order for APOExptime to work:
        numpy, 
@@ -23,10 +23,9 @@ The APOExptime package can be found our `github page <https://github.com/APOExpo
        synphot,
        astropy.
 
-Once you've installed ``APOETC`` you can call it in python by doing:
+Once you've installed ``APOETC`` you can import its modules into python by doing:
 
 .. code:: python
 
-   import APOETC
-
-When you import APOETC, it automatically imports the modules. This way you only have to call the modules and it's respective classes/functions as oppose to calling the package.
+    from APOETC import *
+   

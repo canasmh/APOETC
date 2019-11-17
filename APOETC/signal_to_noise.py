@@ -11,6 +11,8 @@ class Moon:
 
     Parameters
     ----------
+    lunar_phase : float
+        Number from 0 to 1 where 0 is a new moon and 1 is the full moon.
 
     Attributes
     ----------
@@ -19,31 +21,23 @@ class Moon:
 
     """
 
-    def __init__(self, lunar_phase, utc):
+    def __init__(self,
+                 lunar_phase,
+                 utc,
+                 lat = '32.7803',
+                 long = '-105.8203'
+                 ):
+
+
 
         self.lunar_phase = lunar_phase
-        self.seeing = seeing
-        self.airmass = airmass
-
-        self.transmission()
-        self.emission()
-
-    def transmission(self):
-        if self.airmass <= 1.25:
-            trans_file = 'trans_1.txt'
-        elif self.airmass < 1.75 and airmass > 1.25:
-            trans_file = 'trans_1_5.txt'
-        elif self.airmass >= 1.75 and airmass < 2.25:
-            trans_file = 'trans_2.txt'
-        elif self.airmass >= 2.25:
-            trans_file = 'trans_2_5.txt'
-
-        transmission = np.loadtxt('../data/sky/' + trans_file)
-        self.sky_transmission = ius(transmission[:, 0] \
-                                                             , transmission[:, 1] \
-                                                             )
+        self.UTC = utc
+        self.lat = lat
+        self.long = long
 
     def emission(self):
+
+
         path_to_dir = dirname(abspath(__file__))+'/data/Sky/'
 
         if lunar_phase < 0.25:
@@ -54,8 +48,48 @@ class Moon:
             emission_file = 'moon_100.txt'
 
         emission = np.loadtxt(path_to_dir + emission_file)
-        self.sky_emission = interpolate.InterpolatedUnivariateSpline(
-            emission[:, 0], emission[:, 1])
+        emission = interpolate.InterpolatedUnivariateSpline(emission[:, 0], emission[:, 1])
+
+        return emission
+
+    def coord(self):
+        apo = ephem.Observer()
+        apo.lat = self.lat
+        apo.lon = self.long
+        apo.Date = self.UTC
+        moon = ephem.Moon()
+        moon.compute(apo)
+
+        return moon.alt, moon.az
+
+
+
+
+
+
+
+# self.lunar_phase = lunar_phase
+# self.seeing = seeing
+# self.airmass = airmass
+#
+# self.transmission()
+# self.emission()
+
+
+# def transmission(self):
+#     if self.airmass <= 1.25:
+#         trans_file = 'trans_1.txt'
+#     elif self.airmass < 1.75 and airmass > 1.25:
+#         trans_file = 'trans_1_5.txt'
+#     elif self.airmass >= 1.75 and airmass < 2.25:
+#         trans_file = 'trans_2.txt'
+#     elif self.airmass >= 2.25:
+#         trans_file = 'trans_2_5.txt'
+#
+#     transmission = np.loadtxt('../data/sky/' + trans_file)
+#     self.sky_transmission = ius(transmission[:, 0] \
+#                                                          , transmission[:, 1] \
+#                                                          )
 
 class Target:
     """Object representing the target star.

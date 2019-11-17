@@ -9,7 +9,7 @@ Unfortunately, the only instrument that works in this program is the Arctic inst
 
 
 .. code:: python
-   
+
     #First import the modules
     from APOETC import *
 
@@ -27,7 +27,7 @@ Unfortunately, the only instrument that works in this program is the Arctic inst
     filt = instrument.filter('V')
 
 The filter module returns the Johnson-Cousin V band filter interpolated. It also defines a new attribute called
-filter_range.
+``filter_range`` which is a tuple (min_wavelength, max_wavelength).
 
 .. Warning::
 
@@ -41,18 +41,46 @@ You can plot the filter profile by doing the following:
     #and xmax to be the upper limit. 100 is just a random
     #number used. You can space the grid out how you please.
     #I recommend being consistent though.
-    x = np.linspace(filter_range[0],filter_range[1],100)
+    x = np.linspace(instrument.filter_range[0],instrument.filter_range[1],100)
     plt.plot(x,filt(x))
-    plt.ylim(0,1)
-    plt.xlim(filter_range[0],filter_range[1])
+    plt.ylim(-0.05,1.05)
+    plt.xlim(instrument.filter_range[0],instrument.filter_range[1])
     plt.xlabel('Wavelength (Angstroms)')
     plt.ylabel('Transmission')
-    plt.show
+    plt.title('The V band')
+    plt.show()
+
+Which should return something that looks like this:
+
+.. figure:: _static/thevband.png
+    :align: center
 
 Notice that the default units for wavelength is Angstroms. That should be consistent through out the whole package.
+
+
 
 If you are unsure how scipy's UnivariateSpline works you might want to take a look at their `documentation <https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.UnivariateSpline.html>`_.
 
 It might also be handy to go ahead and interpolate the efficiency by using the ``Instrument.interpolate_efficiency`` method.
 
+.. code:: python
 
+    #Use the Instrument.interpolate_efficiency() method.
+    interpolated_efficiency = instrument.interpolate_efficiency()
+
+    #Plot it
+    new_x = np.linspace(instrument.wavelength[0],instrument.wavelength[-1],100)
+    plt.plot(new_x,interpolated_efficiency(new_x))
+    plt.ylim(-0.05,1.05)
+    plt.xlim(instrument.wavelength[0],instrument.wavelength[-1])
+    plt.xlabel('Wavelength (Angstroms)')
+    plt.ylabel('Efficiency')
+    plt.title('Quantum Efficiency of Arctic')
+    plt.show()
+
+The plot should look like this:
+
+.. figure:: _static/efficiency.png
+    :align: center
+
+You can compare with the plot shown in the Arctic `manual <https://www.apo.nmsu.edu/arc35m/Instruments/ARCTIC/>`_. Notice wavelength is still in angstroms.

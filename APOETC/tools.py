@@ -2,7 +2,9 @@ import ephem
 import numpy as np
 
 def localtime_to_utc(local,mdt=True):
-    """Converts local time at APO to UTC
+    """
+
+    Converts local time at APO to UTC
 
     Parameters
     ----------
@@ -52,7 +54,9 @@ def localtime_to_lst(local,
                      latitude='32.7803',
                      longitude='-108.8203'
                      ):
-    """Converts local time at APO to local sidereal time
+    """
+
+    Converts local time at APO to local sidereal time
 
     Parameters
     ----------
@@ -117,7 +121,9 @@ def equatorial_to_horizontal(declination,
                              ):
 
 
-    """Converts from equatorial coordinate system to horizontal coordinate system.
+    """
+
+    Converts from equatorial coordinate system to horizontal coordinate system.
     
     Parameters
     ----------
@@ -130,10 +136,10 @@ def equatorial_to_horizontal(declination,
     observers_latitude : str, optional
         The altitude of the observatory. Defaults to 32.7803.
 
-    Input: dec in degrees (decimal), RA in hours (decimal),
-    LST in hrs (decimal), observers altitude in degrees (decimal),
-
-    Output: The azimuth (A) and altitude (h) of star
+    Return
+    -------
+    az, alt : tuple
+        The azimuth and altitude based off the equatorial coordinates provided.
     """
 
     #Split the Right Ascension into it's components.
@@ -178,7 +184,7 @@ def equatorial_to_horizontal(declination,
     az = np.arctan2(sin_az, cos_az)
     az_deg = mnpdegrees(az) % 360
 
-    return "A = {} deg, h = {} deg".format(az_deg, alt_deg)
+    return az_deg, alt_deg
 
 
 def dec_to_sexa(decimal, key, round_value=1):
