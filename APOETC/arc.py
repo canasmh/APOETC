@@ -142,6 +142,8 @@ class Telescope:
         The name of the observatory. Default is 'ARC 3.5m'.
     mirror_diameter : float, optional
         The diameter of the primary mirror in cgs. Default is 350 cm.
+    coord : tuple, optional
+        The latitude and longitude of the observatory. Default set to APO
 
     Attributes
     -----------
@@ -153,9 +155,19 @@ class Telescope:
     throughput : float
         The total throughput of the telescope. This is set to be 0.90.
 
+    latitude : str
+        Latitude of the observatory. Defaults to 32.7803.
+
+    longitude : str
+        Longitude of the observatory. Defaults to -105.8203
+
     """
 
-    def __init__(self,obs_name = 'ARC 3.5m',mirror_diameter = 350):
+    def __init__(self,
+                 obs_name = 'ARC 3.5m',
+                 mirror_diameter = 350,
+                 coord = ['32.7803','-105.8203']
+                 ):
         """The constructor of the Telescope class.
         """
 
@@ -167,3 +179,7 @@ class Telescope:
 
         #Throughput of telescope.
         self.throughput = 0.90 #Random but reasonable number
+
+        #Latitude and longitude of the observatory
+        self.latitude = coord[0]
+        self.longitude = coord[1]

@@ -1,9 +1,26 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-class Sky:
+import numpy as np
+import ephem
+from tools import *
+from os.path import dirname, abspath
 
-    def __init__(self, lunar_phase=0, seeing=1, airmass=1, transmission = 0.90):
+class Moon:
+    """
+    Function that calculates the position and emission of the moon.
+
+    Parameters
+    ----------
+
+    Attributes
+    ----------
+    
+
+
+    """
+
+    def __init__(self, lunar_phase, utc):
 
         self.lunar_phase = lunar_phase
         self.seeing = seeing
@@ -28,6 +45,8 @@ class Sky:
                                                              )
 
     def emission(self):
+        path_to_dir = dirname(abspath(__file__))+'/data/Sky/'
+
         if lunar_phase < 0.25:
             emission_file = 'moon_00.txt'
         elif lunar_phase >= 0.25 and lunar_phase < 0.75:
@@ -35,7 +54,7 @@ class Sky:
         elif lunar_phase >= 0.75:
             emission_file = 'moon_100.txt'
 
-        emission = np.loadtxt('../data/sky/' + emission_file)
+        emission = np.loadtxt(path_to_dir + emission_file)
         self.sky_emission = interpolate.InterpolatedUnivariateSpline(
             emission[:, 0], emission[:, 1])
 
@@ -64,12 +83,22 @@ class Target:
 
     def __init__(
             self,
+            coord,
+            local_sidereal_time,
+            MDT,
             magnitude,
             magsystem,
             filter_range,
             SED=None,
             temp=5778
     ):
+
+    hour = time.split(':')[0]
+    min = time.split(':')[1]
+    if MDT:
+        UTC = time.split(':')[0] + 6
+    else:
+        UTC = time.split(':')[1] + 7
         """Creates an instance of the Target class.
 
         Parameters:
