@@ -7,7 +7,7 @@ https://python-packaging-tutorial.readthedocs.io/en/latest/setup_py.html#setup-p
 
 import sys,os
 from APOETC import arc
-from APOETC import obvservation
-
+from APOETC import signal_to_noise
+from APOETC import tools
 if __name__=="__main__":
      main.main()
