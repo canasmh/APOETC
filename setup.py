@@ -9,7 +9,7 @@ setup(name='APOETC',
       packages=['APOETC'],
       scripts=['APOETC/bin/etc_script.py'],
       include_package_data=True,
-      package_data={'APOETC':['./data/APO/Arctic/*.dat','./data/APO/Filter/Johnson/*.dat','./data/APO/Filter/SDSS/*.dat']},
+      package_data={'APOETC':['./data/APO/Arctic/*.dat','./data/APO/Filters/*.dat','./data/APO/Filters/*.dat']},
       description='An exposure time calculator for the ARC 3.5m telescope'
       )
 
