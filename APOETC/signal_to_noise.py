@@ -3,7 +3,6 @@
 
 import numpy as np
 import ephem
-from tools import *
 from os.path import dirname, abspath
 
 class Moon:
