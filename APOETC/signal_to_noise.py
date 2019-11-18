@@ -4,113 +4,169 @@
 import numpy as np
 import ephem
 from os.path import dirname, abspath
+import tools
+from scipy.interpolate import InterpolatedUnivariateSpline
+
 
 class Moon:
-    """
-    Function that calculates the position and emission of the moon.
+
+    """Function that calculates the position and emission of the moon.
 
     Parameters
     ----------
     lunar_phase : float
         Number from 0 to 1 where 0 is a new moon and 1 is the full moon.
 
+    utc : str
+        The Coordinated Universal Time at which you wish to do your observation. Follow the format 'YYY/MM/DD HH:MM'
+
+    lat : str, optional
+        The geocentric latitude at which you are doing your observation. Defaults to '32.7803'
+
+    lon : str, optional
+        The geocentric longitude at which you are doing your observation. Defaults to '-105.8203'
+
     Attributes
     ----------
-    
+    lunar_phase : float
+        Number from 0 to 1 where 0 is a new moon and 1 is the full moon.
 
+    utc : str
+        The Coordinated Universal Time at which you wish to do your observation. Follow the format 'YYY/MM/DD HH:MM'
+
+    lat : str, optional
+        The geocentric latitude at which you are doing your observation. Defaults to '32.7803'
+
+    lon : str, optional
+        The geocentric longitude at which you are doing your observation. Defaults to '-105.8203'
 
     """
 
     def __init__(self,
                  lunar_phase,
                  utc,
-                 lat = '32.7803',
-                 long = '-105.8203'
+                 lat='32.7803',
+                 lon='-105.8203'
                  ):
 
+        """Constructor method for the Moon class.
 
+        """
 
         self.lunar_phase = lunar_phase
         self.UTC = utc
         self.lat = lat
-        self.long = long
+        self.lon = lon
 
     def emission(self):
+        """Method to determine the interpolated emission of the moon
 
+        This method takes the lunar phase and uses a data file to determine the emission over a range of wavelengths.
+
+        Returns
+        -------
+        emission : Interpolated Object
+            The emission of the moon.
+
+        """
 
         path_to_dir = dirname(abspath(__file__))+'/data/Sky/'
 
         if lunar_phase < 0.25:
             emission_file = 'moon_00.txt'
-        elif lunar_phase >= 0.25 and lunar_phase < 0.75:
+        elif 0.25 <= lunar_phase < 0.75:
             emission_file = 'moon_50.txt'
         elif lunar_phase >= 0.75:
             emission_file = 'moon_100.txt'
 
         emission = np.loadtxt(path_to_dir + emission_file)
         emission = interpolate.InterpolatedUnivariateSpline(emission[:, 0], emission[:, 1])
+        setattr(Moon, 'range', [emission[:, 0][0],emission[:, 0][-1]])
 
         return emission
 
     def coord(self):
+        """Method that returns the horizontal coordinates of the moon.
+
+        This method takes the latitude, longitude, and Coordinated Universal Time to calculate the position of the moon.
+
+        Returns
+        --------
+            alt, ax : tuple
+                A tuple containing the altitude and azimuthal angles of the moon in degrees.
+
+        """
+
         apo = ephem.Observer()
         apo.lat = self.lat
-        apo.lon = self.long
-        apo.Date = self.UTC
+        apo.lon = self.lon
+        apo.date = self.UTC
         moon = ephem.Moon()
         moon.compute(apo)
 
-        return moon.alt, moon.az
+        return np.degrees(moon.alt), np.degrees(moon.az)
 
-
-
-
-
-
-
-# self.lunar_phase = lunar_phase
-# self.seeing = seeing
-# self.airmass = airmass
-#
-# self.transmission()
-# self.emission()
-
-
-# def transmission(self):
-#     if self.airmass <= 1.25:
-#         trans_file = 'trans_1.txt'
-#     elif self.airmass < 1.75 and airmass > 1.25:
-#         trans_file = 'trans_1_5.txt'
-#     elif self.airmass >= 1.75 and airmass < 2.25:
-#         trans_file = 'trans_2.txt'
-#     elif self.airmass >= 2.25:
-#         trans_file = 'trans_2_5.txt'
-#
-#     transmission = np.loadtxt('../data/sky/' + trans_file)
-#     self.sky_transmission = ius(transmission[:, 0] \
-#                                                          , transmission[:, 1] \
-#                                                          )
 
 class Target:
+
     """Object representing the target star.
 
-    Attributes:
-        magnitude : float
-            The magnitude of the star you wish to observe.
+    This object is only functional for unresolved or point sources. You might get away with using it for planets, but
+    I definitely wouldn't recommend using this package if you're observing something like a galaxy.
 
-        magnitude_system : str
-            The magnitude used in the above attribute.
+    Parameters
+    -----------
+    coord : str
+        The equatorial coordinate of the star you wish to observe. Right ascension in hours and declination in degrees.
+        'HH:MM:SS.S DD:MM:SS.S'.
 
-        filter_range : tuple
-            The band pass of the filter (xmin,xmax).
+    local_sidereal_time : str
+        The local sidereal time of the observation in the format 'HH:MM:SS.S'.
 
-        SED : obj
-            If specified, this will contain the interpolated spectral energy distribution
-            of the target star.
+    mdt : bool
+        Mountain Daylight Time. True if you are observing between March 10 - November 03.
 
-        temp : float
-            The temperature of the star. This is used only if you wish to
-            use Plank's law to obtain the SED.
+    magnitude : float
+        The magnitude of the target star.
+
+    magnitude_system : str
+        The magnitude system used to define ``magnitude``.
+
+    range : tuple
+        The range of interest. If using a filter, then this should be the filter range. If using a spectrograph, then
+        refer to the dispersion of the spectrograph to determine your range.
+
+    temp = float, optional
+        The temperature of the target star. This is used to calculate a black body spectrum of the same temperature.
+
+    Attributes
+    ----------
+    alt : float
+        The altitude of the star in degrees.
+
+    az : float
+        The azimuthal angle of the star in degrees.
+
+    magnitude : float
+        The magnitude of the star you wish to observe.
+
+    magnitude_system : str
+        The magnitude used in the above attribute.
+
+    filter_range : tuple
+        The band pass of the filter (xmin,xmax).
+
+    SED : obj
+        If specified, this will contain the interpolated spectral energy distribution
+        of the target star.
+
+    temp : float
+        The temperature of the star. This is used only if you wish to
+        use Plank's law to obtain the SED.
+
+    airmass : float
+        The airmass of the star. This is calculated using the relationship X = sec(z), where
+        the zenith angle is 1 - alt.
 
     """
 
@@ -118,42 +174,26 @@ class Target:
             self,
             coord,
             local_sidereal_time,
-            MDT,
             magnitude,
-            magsystem,
+            magnitude_system,
             filter_range,
-            SED=None,
             temp=5778
-    ):
+            ):
 
-        hour = time.split(':')[0]
-        min = time.split(':')[1]
-        if MDT:
-            UTC = time.split(':')[0] + 6
-        else:
-            UTC = time.split(':')[1] + 7
-            """Creates an instance of the Target class.
-    
-            Parameters:
-                magnitude : float
-                    The magnitude of the star you wish to observe.
-    
-                magsystem : obj
-                    The magnitude system used in the above paramer.
-    
-                filter_range : tuple
-                    The range of the filter used to observe this target.
-    
-                SED : obj (optional)
-                    The spectral energy distribution of the target star.
-                    Default is None.
-    
-                temp : float (optional)
-                    The temperature of the target star. This is used to create
-                    a black body spectrum of the star.
-            """
+        """Constructor method of the Target class.
 
-        #Use the specified magnitude system.
+        """
+
+        # Split right ascension and declination.
+
+        ra = coord.split(' ')[0]
+        dec = coord.split(' ')[1]
+
+        # Use the tools.equatorial_to_horizontal() function to convert from Equatorial coordinates to Horizontal
+        # coordinates
+        alt, az = tools.equatorial_to_horizontal(dec,ra,local_sidereal_time)
+
+        # Use the specified magnitude system.
         if magsystem.lower() == 'vegamag':
             magnitude_system = units.VEGAMAG
         elif magsystem.lower() == 'stmag':
@@ -161,42 +201,48 @@ class Target:
         elif magsystem.lower() == 'abnu':
             magnitude_system = u.ABmag
 
-
+        # Set the attributes
+        self.alt = alt
+        self.az = az
         self.magnitude = magnitude
         self.magnitude_system = magnitude_system
-        self.SED = SED
         self.temp = temp
         self.filter_range = filter_range
+        self.airmass = 1/np.cos(1-np.radians(self.alt))
 
     def convert_to_flux(self):
         """Convert magnitude of target star to flux.
 
-        Returns:
+        The spectrum of this flux will be identical to the spectrum of Vega.
+
+        Returns
+        -------
+        flux :
             The wavelength flux of the target in cgs units.
         """
 
-        #Get the spectrum of Vega
+        # Get the spectrum of Vega
         vega = SourceSpectrum.from_vega()
 
-        #convert to flux using units.convert_flux
+        # Convert to flux using units.convert_flux
         flux = units.convert_flux(
             self.filter_range,
             self.magnitude*magntidue_system,
             units.FLAM,
-            vegaspec=vega
-        )
+            vegaspec=vega)
 
-        #return the flux of the star
+        # Return the flux of the star
         return flux
 
     def blackbody_lambda(self):
+
         """Calculates the spectrum of a blackbody from temperature temp.
 
         Returns:
             The wavelength flux of the target as determined by a blackbody
         """
 
-        #Get a black body spectrum of temperature temp
+        # Get a black body spectrum of temperature temp
         sp = SourceSpectrum(BlackBody1D, temperature=self.temp * u.K)
         sp_new = sp / np.mean(sp(self.range * u.AA,
                                  flux_unit=units.FLAM
@@ -206,6 +252,44 @@ class Target:
         bb_lam = ius(range(10, 30000), x)
 
         return bb_lam
+
+    def transmission(self):
+        """Determines the amount of transmission allowed by the sky based on the targets altitude.
+
+         This method takes the airmass of the star and searches through the package data files to find the file that
+         most closely resembles that airmass. It returns the transmission of the sky interpolated over the newly defined
+         attribute ``Target.transmission_range`` which is a tuple containing the wavelength range in angstroms contained
+         in the data file.
+
+         Returns
+         -------
+            interpolated_transmission : Interpolated Object
+                The transmission of the filter interpolated.
+
+         """
+
+        if self.airmass <= 1.25:
+            trans_file = 'trans_1.txt'
+        elif self.airmass < 1.75 and airmass > 1.25:
+            trans_file = 'trans_1_5.txt'
+        elif self.airmass >= 1.75 and airmass < 2.25:
+            trans_file = 'trans_2.txt'
+        elif self.airmass >= 2.25:
+            trans_file = 'trans_2_5.txt'
+
+        path_to_file = dirname(abspath(__file__)) +'/data/Sky/' + trans_file
+
+        transmission = np.loadtxt(path_to_file)
+
+        wavelength = transmission[:, 0]*10
+        trans = transmission[:, 1]
+
+        interpolated_transmission = InterpolatedUnivariateSpline(wavelength, trans)
+        setattr(Target, 'transmission_range', [wavelength[0], wavelength[-1]])
+
+        return interpolated_transmission
+
+
 
 
 #

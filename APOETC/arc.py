@@ -6,12 +6,6 @@ from os.path import dirname, abspath
 from astropy.io import ascii
 from scipy.interpolate import InterpolatedUnivariateSpline
 
-"""This module contains everything having to do with the Astrophysical Research Consortium (ARC) 3.5m telescope. The 
-module is composed of two classes, the ``Instrument`` class and the ``Telescope`` class. These classes are by default
-representative of the ARC 3.5m telescope, but we hope in the near future it can be generalized to many different 
-telescopes and observatories.
-
-"""
 
 class Instrument:
     """This object represents the instrument used.
@@ -163,8 +157,8 @@ class Telescope:
     area : float
         The light gathering area of the primary mirror.
 
-    throughput : float
-        The throughput of the telescope.
+    throughput : Intepolated object
+        The throughput of the telescope which is based on the reflectivity of aluminum.
 
     latitude : str
         Latitude of the observatory. Defaults to 32.7803.
@@ -198,7 +192,8 @@ class Telescope:
         self.area = np.pi * (mirror_diameter / 2) ** 2  # pi r^2 #cm
 
         # Throughput of telescope, based on reflectivity of aluminum.
-        self.throughput = InterpolatedUnivariateSpline(wavelength,transmission)
+        self.throughput = InterpolatedUnivariateSpline(wavelength, transmission)
+        self.throughput_range = [wavelength[0], wavelength[-1]]
 
         # Latitude and longitude of the observatory
         self.latitude = coord[0]
