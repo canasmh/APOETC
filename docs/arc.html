@@ -43,53 +43,85 @@ telescopes and observatories.</p>
 <h2>The <code class="docutils literal notranslate"><span class="pre">Instrument</span></code> class<a class="headerlink" href="#the-instrument-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="arc.Instrument">
-<em class="property">class </em><code class="sig-prename descclassname">arc.</code><code class="sig-name descname">Instrument</code><span class="sig-paren">(</span><em class="sig-param">inst_name</em><span class="sig-paren">)</span><a class="headerlink" href="#arc.Instrument" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.</code><code class="sig-name descname">Instrument</code><span class="sig-paren">(</span><em class="sig-param">inst_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arc.html#Instrument"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.Instrument" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>This object represents the instrument used.</p>
 <p>The ARC 3.5 meter telescope has a 5 different instruments available. For a list of instrument names and
 specifications, check out their <a class="reference external" href="https://www.apo.nmsu.edu/arc35m/">user manual</a>.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>inst_name</strong><span class="classifier">str</span></dt><dd><p>The name of the isntrument used.</p>
+<dd class="field-odd"><p><strong>inst_name</strong> (<em>str</em>) – The name of the instrument used.</p>
 </dd>
 </dl>
-</dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>inst_name</strong><span class="classifier">str</span></dt><dd><p>The name of the instrument.</p>
-</dd>
-<dt><strong>readout_noise</strong><span class="classifier">float</span></dt><dd><p>The readout noise of the instrument.</p>
-</dd>
-<dt><strong>gain</strong><span class="classifier">float</span></dt><dd><p>The gain of the instrument.</p>
-</dd>
-<dt><strong>sensitivity</strong><span class="classifier">arr</span></dt><dd><p>The quantum efficiency (per angstrom) of the instrument.</p>
-</dd>
-<dt><strong>wavelength</strong><span class="classifier">arr</span></dt><dd><p>The wavelengths corresponding to the sensitivity attribute.</p>
-</dd>
-<dt><strong>plate_scale</strong><span class="classifier">float</span></dt><dd><p>The plate scale of the instrument.</p>
+<dl class="attribute">
+<dt id="arc.Instrument.readout_noise">
+<code class="sig-name descname">readout_noise</code><a class="headerlink" href="#arc.Instrument.readout_noise" title="Permalink to this definition">¶</a></dt>
+<dd><p>The readout noise of the instrument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.Instrument.gain">
+<code class="sig-name descname">gain</code><a class="headerlink" href="#arc.Instrument.gain" title="Permalink to this definition">¶</a></dt>
+<dd><p>The gain of the instrument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
-<p class="rubric">Methods</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#arc.Instrument.filter" title="arc.Instrument.filter"><code class="xref py py-obj docutils literal notranslate"><span class="pre">filter</span></code></a>(self, filter)</p></td>
-<td><p>Method that returns the transmission of specified filter.</p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#arc.Instrument.interpolate_efficiency" title="arc.Instrument.interpolate_efficiency"><code class="xref py py-obj docutils literal notranslate"><span class="pre">interpolate_efficiency</span></code></a>(self)</p></td>
-<td><p>Method that interpolates the quantum efficiency.</p></td>
-</tr>
-</tbody>
-</table>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.Instrument.inst_name">
+<code class="sig-name descname">inst_name</code><a class="headerlink" href="#arc.Instrument.inst_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>The name of the instrument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.Instrument.sensitivity">
+<code class="sig-name descname">sensitivity</code><a class="headerlink" href="#arc.Instrument.sensitivity" title="Permalink to this definition">¶</a></dt>
+<dd><p>The quantum efficiency (per angstrom) of the instrument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>arr</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.Instrument.wavelength">
+<code class="sig-name descname">wavelength</code><a class="headerlink" href="#arc.Instrument.wavelength" title="Permalink to this definition">¶</a></dt>
+<dd><p>The wavelengths corresponding to the sensitivity attribute.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>arr</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="arc.Instrument.plate_scale">
+<code class="sig-name descname">plate_scale</code><a class="headerlink" href="#arc.Instrument.plate_scale" title="Permalink to this definition">¶</a></dt>
+<dd><p>The plate scale of the instrument.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="method">
 <dt id="arc.Instrument.filter">
-<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">filter</em><span class="sig-paren">)</span><a class="headerlink" href="#arc.Instrument.filter" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">filter</code><span class="sig-paren">(</span><em class="sig-param">filter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arc.html#Instrument.filter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.Instrument.filter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that returns the transmission of specified filter.</p>
 <p>The Astrophysical Research Consortium 3.5m telescope uses both Johnson-Cousins and SDSS prime filters.
 the <cite>filter</cite> parameter must equal one of the following:</p>
@@ -100,20 +132,20 @@ the <cite>filter</cite> parameter must equal one of the following:</p>
 <span class="o">*</span><span class="s1">&#39;I&#39;</span>        <span class="o">*</span><span class="s1">&#39;iprime&#39;</span>
 </pre></div>
 </div>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>filter</strong><span class="classifier">str</span></dt><dd><p>The name of the filter used (i.e., ‘U’,’B’,’gprime’, etc.).</p>
-</dd>
-</dl>
+<dl class="simple">
+<dt>filter<span class="classifier">str</span></dt><dd><p>The name of the filter used (i.e., ‘U’,’B’,’gprime’, etc.).</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="arc.Instrument.interpolate_efficiency">
-<code class="sig-name descname">interpolate_efficiency</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#arc.Instrument.interpolate_efficiency" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">interpolate_efficiency</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/arc.html#Instrument.interpolate_efficiency"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.Instrument.interpolate_efficiency" title="Permalink to this definition">¶</a></dt>
 <dd><p>Method that interpolates the quantum efficiency.</p>
+<dl class="simple">
+<dt>efficiency<span class="classifier">Interpolated object</span></dt><dd><p>The efficiency of the instrument interpolated over the appropriate wavelengths (in Angstroms).</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -124,37 +156,31 @@ the <cite>filter</cite> parameter must equal one of the following:</p>
 <h2>The <code class="docutils literal notranslate"><span class="pre">Telescope</span></code> class<a class="headerlink" href="#the-telescope-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="arc.Telescope">
-<em class="property">class </em><code class="sig-prename descclassname">arc.</code><code class="sig-name descname">Telescope</code><span class="sig-paren">(</span><em class="sig-param">obs_name='ARC 3.5m', mirror_diameter=350, coord=['32.7803', '-105.8203']</em><span class="sig-paren">)</span><a class="headerlink" href="#arc.Telescope" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">arc.</code><code class="sig-name descname">Telescope</code><span class="sig-paren">(</span><em class="sig-param">obs_name='ARC 3.5m', mirror_diameter=350, coord=['32.7803', '-105.8203']</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/arc.html#Telescope"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#arc.Telescope" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object that represents the telescope used.</p>
 <p>For our purposes, this telescope really represents the Astrophysical Research Consortium 3.5m telescope
 but we hope to make it more versatile in the future. The <code class="docutils literal notranslate"><span class="pre">throughput</span></code> attribute is defined by the reflectivity
 of aluminum from 2000 A to 100000 A as determined by
 <a class="reference external" href="https://laserbeamproducts.wordpress.com/2014/06/19/reflectivity-of-aluminium-uv-visible-and-infrared/">laserbeamproducts.com</a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>obs_name</strong><span class="classifier">str, optional</span></dt><dd><p>The name of the observatory. Default is ‘ARC 3.5m’.</p>
+<dl class="simple">
+<dt>obs_name<span class="classifier">str, optional</span></dt><dd><p>The name of the observatory. Default is ‘ARC 3.5m’.</p>
 </dd>
-<dt><strong>mirror_diameter</strong><span class="classifier">float, optional</span></dt><dd><p>The diameter of the primary mirror in cgs. Default is 350 cm.</p>
+<dt>mirror_diameter<span class="classifier">float, optional</span></dt><dd><p>The diameter of the primary mirror in cgs. Default is 350 cm.</p>
 </dd>
-<dt><strong>coord</strong><span class="classifier">tuple, optional</span></dt><dd><p>The latitude and longitude of the observatory. Default set to APO</p>
+<dt>coord<span class="classifier">tuple, optional</span></dt><dd><p>The latitude and longitude of the observatory. Default set to APO</p>
 </dd>
 </dl>
+<dl class="simple">
+<dt>obs_name<span class="classifier">str</span></dt><dd><p>The name of the observatory. Default is ‘ARC 3.5m’.</p>
 </dd>
-<dt class="field-even">Attributes</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>obs_name</strong><span class="classifier">str</span></dt><dd><p>The name of the observatory. Default is ‘ARC 3.5m’.</p>
+<dt>area<span class="classifier">float</span></dt><dd><p>The light gathering area of the primary mirror.</p>
 </dd>
-<dt><strong>area</strong><span class="classifier">float</span></dt><dd><p>The light gathering area of the primary mirror.</p>
+<dt>throughput<span class="classifier">Intepolated object</span></dt><dd><p>The throughput of the telescope which is based on the reflectivity of aluminum.</p>
 </dd>
-<dt><strong>throughput</strong><span class="classifier">Intepolated object</span></dt><dd><p>The throughput of the telescope which is based on the reflectivity of aluminum.</p>
+<dt>latitude<span class="classifier">str</span></dt><dd><p>Latitude of the observatory. Defaults to 32.7803.</p>
 </dd>
-<dt><strong>latitude</strong><span class="classifier">str</span></dt><dd><p>Latitude of the observatory. Defaults to 32.7803.</p>
-</dd>
-<dt><strong>longitude</strong><span class="classifier">str</span></dt><dd><p>Longitude of the observatory. Defaults to -105.8203</p>
-</dd>
-</dl>
+<dt>longitude<span class="classifier">str</span></dt><dd><p>Longitude of the observatory. Defaults to -105.8203</p>
 </dd>
 </dl>
 </dd></dl>
@@ -169,6 +195,9 @@ of aluminum from 2000 A to 100000 A as determined by
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/3_5.JPG" alt="Logo"/>
+            </a></p>
 <h1 class="logo"><a href="index.html">APOETC</a></h1>
 
 
@@ -227,7 +256,7 @@ of aluminum from 2000 A to 100000 A as determined by
       &copy;None.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

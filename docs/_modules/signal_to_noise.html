@@ -37,113 +37,169 @@
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">ephem</span>
 <span class="kn">from</span> <span class="nn">os.path</span> <span class="k">import</span> <span class="n">dirname</span><span class="p">,</span> <span class="n">abspath</span>
+<span class="kn">import</span> <span class="nn">tools</span>
+<span class="kn">from</span> <span class="nn">scipy.interpolate</span> <span class="k">import</span> <span class="n">InterpolatedUnivariateSpline</span>
+
 
 <div class="viewcode-block" id="Moon"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Moon">[docs]</a><span class="k">class</span> <span class="nc">Moon</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Function that calculates the position and emission of the moon.</span>
+
+    <span class="sd">&quot;&quot;&quot;Function that calculates the position and emission of the moon.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">    lunar_phase : float</span>
 <span class="sd">        Number from 0 to 1 where 0 is a new moon and 1 is the full moon.</span>
 
+<span class="sd">    utc : str</span>
+<span class="sd">        The Coordinated Universal Time at which you wish to do your observation. Follow the format &#39;YYY/MM/DD HH:MM&#39;</span>
+
+<span class="sd">    lat : str, optional</span>
+<span class="sd">        The geocentric latitude at which you are doing your observation. Defaults to &#39;32.7803&#39;</span>
+
+<span class="sd">    lon : str, optional</span>
+<span class="sd">        The geocentric longitude at which you are doing your observation. Defaults to &#39;-105.8203&#39;</span>
+
 <span class="sd">    Attributes</span>
 <span class="sd">    ----------</span>
-<span class="sd">    </span>
+<span class="sd">    lunar_phase : float</span>
+<span class="sd">        Number from 0 to 1 where 0 is a new moon and 1 is the full moon.</span>
 
+<span class="sd">    utc : str</span>
+<span class="sd">        The Coordinated Universal Time at which you wish to do your observation. Follow the format &#39;YYY/MM/DD HH:MM&#39;</span>
+
+<span class="sd">    lat : str, optional</span>
+<span class="sd">        The geocentric latitude at which you are doing your observation. Defaults to &#39;32.7803&#39;</span>
+
+<span class="sd">    lon : str, optional</span>
+<span class="sd">        The geocentric longitude at which you are doing your observation. Defaults to &#39;-105.8203&#39;</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">lunar_phase</span><span class="p">,</span>
                  <span class="n">utc</span><span class="p">,</span>
-                 <span class="n">lat</span> <span class="o">=</span> <span class="s1">&#39;32.7803&#39;</span><span class="p">,</span>
-                 <span class="n">long</span> <span class="o">=</span> <span class="s1">&#39;-105.8203&#39;</span>
+                 <span class="n">lat</span><span class="o">=</span><span class="s1">&#39;32.7803&#39;</span><span class="p">,</span>
+                 <span class="n">lon</span><span class="o">=</span><span class="s1">&#39;-105.8203&#39;</span>
                  <span class="p">):</span>
 
+        <span class="sd">&quot;&quot;&quot;Constructor method for the Moon class.</span>
 
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">lunar_phase</span> <span class="o">=</span> <span class="n">lunar_phase</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">UTC</span> <span class="o">=</span> <span class="n">utc</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="n">lat</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">long</span> <span class="o">=</span> <span class="n">long</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="n">lon</span>
 
 <div class="viewcode-block" id="Moon.emission"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Moon.emission">[docs]</a>    <span class="k">def</span> <span class="nf">emission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method to determine the interpolated emission of the moon</span>
 
+<span class="sd">        This method takes the lunar phase and uses a data file to determine the emission over a range of wavelengths.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        emission : Interpolated Object</span>
+<span class="sd">            The emission of the moon.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span><span class="o">+</span><span class="s1">&#39;/data/Sky/&#39;</span>
 
         <span class="k">if</span> <span class="n">lunar_phase</span> <span class="o">&lt;</span> <span class="mf">0.25</span><span class="p">:</span>
             <span class="n">emission_file</span> <span class="o">=</span> <span class="s1">&#39;moon_00.txt&#39;</span>
-        <span class="k">elif</span> <span class="n">lunar_phase</span> <span class="o">&gt;=</span> <span class="mf">0.25</span> <span class="ow">and</span> <span class="n">lunar_phase</span> <span class="o">&lt;</span> <span class="mf">0.75</span><span class="p">:</span>
+        <span class="k">elif</span> <span class="mf">0.25</span> <span class="o">&lt;=</span> <span class="n">lunar_phase</span> <span class="o">&lt;</span> <span class="mf">0.75</span><span class="p">:</span>
             <span class="n">emission_file</span> <span class="o">=</span> <span class="s1">&#39;moon_50.txt&#39;</span>
         <span class="k">elif</span> <span class="n">lunar_phase</span> <span class="o">&gt;=</span> <span class="mf">0.75</span><span class="p">:</span>
             <span class="n">emission_file</span> <span class="o">=</span> <span class="s1">&#39;moon_100.txt&#39;</span>
 
         <span class="n">emission</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">path_to_dir</span> <span class="o">+</span> <span class="n">emission_file</span><span class="p">)</span>
         <span class="n">emission</span> <span class="o">=</span> <span class="n">interpolate</span><span class="o">.</span><span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span><span class="n">emission</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">emission</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">Moon</span><span class="p">,</span> <span class="s1">&#39;range&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">emission</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span><span class="n">emission</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">][</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
 
         <span class="k">return</span> <span class="n">emission</span></div>
 
 <div class="viewcode-block" id="Moon.coord"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Moon.coord">[docs]</a>    <span class="k">def</span> <span class="nf">coord</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Method that returns the horizontal coordinates of the moon.</span>
+
+<span class="sd">        This method takes the latitude, longitude, and Coordinated Universal Time to calculate the position of the moon.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        --------</span>
+<span class="sd">            alt, ax : tuple</span>
+<span class="sd">                A tuple containing the altitude and azimuthal angles of the moon in degrees.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="n">apo</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Observer</span><span class="p">()</span>
         <span class="n">apo</span><span class="o">.</span><span class="n">lat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lat</span>
-        <span class="n">apo</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">long</span>
-        <span class="n">apo</span><span class="o">.</span><span class="n">Date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UTC</span>
+        <span class="n">apo</span><span class="o">.</span><span class="n">lon</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">lon</span>
+        <span class="n">apo</span><span class="o">.</span><span class="n">date</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">UTC</span>
         <span class="n">moon</span> <span class="o">=</span> <span class="n">ephem</span><span class="o">.</span><span class="n">Moon</span><span class="p">()</span>
         <span class="n">moon</span><span class="o">.</span><span class="n">compute</span><span class="p">(</span><span class="n">apo</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">moon</span><span class="o">.</span><span class="n">alt</span><span class="p">,</span> <span class="n">moon</span><span class="o">.</span><span class="n">az</span></div></div>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">moon</span><span class="o">.</span><span class="n">alt</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">degrees</span><span class="p">(</span><span class="n">moon</span><span class="o">.</span><span class="n">az</span><span class="p">)</span></div></div>
 
-
-
-
-
-
-
-<span class="c1"># self.lunar_phase = lunar_phase</span>
-<span class="c1"># self.seeing = seeing</span>
-<span class="c1"># self.airmass = airmass</span>
-<span class="c1">#</span>
-<span class="c1"># self.transmission()</span>
-<span class="c1"># self.emission()</span>
-
-
-<span class="c1"># def transmission(self):</span>
-<span class="c1">#     if self.airmass &lt;= 1.25:</span>
-<span class="c1">#         trans_file = &#39;trans_1.txt&#39;</span>
-<span class="c1">#     elif self.airmass &lt; 1.75 and airmass &gt; 1.25:</span>
-<span class="c1">#         trans_file = &#39;trans_1_5.txt&#39;</span>
-<span class="c1">#     elif self.airmass &gt;= 1.75 and airmass &lt; 2.25:</span>
-<span class="c1">#         trans_file = &#39;trans_2.txt&#39;</span>
-<span class="c1">#     elif self.airmass &gt;= 2.25:</span>
-<span class="c1">#         trans_file = &#39;trans_2_5.txt&#39;</span>
-<span class="c1">#</span>
-<span class="c1">#     transmission = np.loadtxt(&#39;../data/sky/&#39; + trans_file)</span>
-<span class="c1">#     self.sky_transmission = ius(transmission[:, 0] \</span>
-<span class="c1">#                                                          , transmission[:, 1] \</span>
-<span class="c1">#                                                          )</span>
 
 <div class="viewcode-block" id="Target"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Target">[docs]</a><span class="k">class</span> <span class="nc">Target</span><span class="p">:</span>
+
     <span class="sd">&quot;&quot;&quot;Object representing the target star.</span>
 
-<span class="sd">    Attributes:</span>
-<span class="sd">        magnitude : float</span>
-<span class="sd">            The magnitude of the star you wish to observe.</span>
+<span class="sd">    This object is only functional for unresolved or point sources. You might get away with using it for planets, but</span>
+<span class="sd">    I definitely wouldn&#39;t recommend using this package if you&#39;re observing something like a galaxy.</span>
 
-<span class="sd">        magnitude_system : str</span>
-<span class="sd">            The magnitude used in the above attribute.</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    -----------</span>
+<span class="sd">    coord : str</span>
+<span class="sd">        The equatorial coordinate of the star you wish to observe. Right ascension in hours and declination in degrees.</span>
+<span class="sd">        &#39;HH:MM:SS.S DD:MM:SS.S&#39;.</span>
 
-<span class="sd">        filter_range : tuple</span>
-<span class="sd">            The band pass of the filter (xmin,xmax).</span>
+<span class="sd">    local_sidereal_time : str</span>
+<span class="sd">        The local sidereal time of the observation in the format &#39;HH:MM:SS.S&#39;.</span>
 
-<span class="sd">        SED : obj</span>
-<span class="sd">            If specified, this will contain the interpolated spectral energy distribution</span>
-<span class="sd">            of the target star.</span>
+<span class="sd">    mdt : bool</span>
+<span class="sd">        Mountain Daylight Time. True if you are observing between March 10 - November 03.</span>
 
-<span class="sd">        temp : float</span>
-<span class="sd">            The temperature of the star. This is used only if you wish to</span>
-<span class="sd">            use Plank&#39;s law to obtain the SED.</span>
+<span class="sd">    magnitude : float</span>
+<span class="sd">        The magnitude of the target star.</span>
+
+<span class="sd">    magnitude_system : str</span>
+<span class="sd">        The magnitude system used to define ``magnitude``.</span>
+
+<span class="sd">    range : tuple</span>
+<span class="sd">        The range of interest. If using a filter, then this should be the filter range. If using a spectrograph, then</span>
+<span class="sd">        refer to the dispersion of the spectrograph to determine your range.</span>
+
+<span class="sd">    temp = float, optional</span>
+<span class="sd">        The temperature of the target star. This is used to calculate a black body spectrum of the same temperature.</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    alt : float</span>
+<span class="sd">        The altitude of the star in degrees.</span>
+
+<span class="sd">    az : float</span>
+<span class="sd">        The azimuthal angle of the star in degrees.</span>
+
+<span class="sd">    magnitude : float</span>
+<span class="sd">        The magnitude of the star you wish to observe.</span>
+
+<span class="sd">    magnitude_system : str</span>
+<span class="sd">        The magnitude used in the above attribute.</span>
+
+<span class="sd">    filter_range : tuple</span>
+<span class="sd">        The band pass of the filter (xmin,xmax).</span>
+
+<span class="sd">    SED : obj</span>
+<span class="sd">        If specified, this will contain the interpolated spectral energy distribution</span>
+<span class="sd">        of the target star.</span>
+
+<span class="sd">    temp : float</span>
+<span class="sd">        The temperature of the star. This is used only if you wish to</span>
+<span class="sd">        use Plank&#39;s law to obtain the SED.</span>
+
+<span class="sd">    airmass : float</span>
+<span class="sd">        The airmass of the star. This is calculated using the relationship X = sec(z), where</span>
+<span class="sd">        the zenith angle is 1 - alt.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -151,42 +207,26 @@
             <span class="bp">self</span><span class="p">,</span>
             <span class="n">coord</span><span class="p">,</span>
             <span class="n">local_sidereal_time</span><span class="p">,</span>
-            <span class="n">MDT</span><span class="p">,</span>
             <span class="n">magnitude</span><span class="p">,</span>
-            <span class="n">magsystem</span><span class="p">,</span>
+            <span class="n">magnitude_system</span><span class="p">,</span>
             <span class="n">filter_range</span><span class="p">,</span>
-            <span class="n">SED</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">temp</span><span class="o">=</span><span class="mi">5778</span>
-    <span class="p">):</span>
+            <span class="p">):</span>
 
-        <span class="n">hour</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
-        <span class="nb">min</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
-        <span class="k">if</span> <span class="n">MDT</span><span class="p">:</span>
-            <span class="n">UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">6</span>
-        <span class="k">else</span><span class="p">:</span>
-            <span class="n">UTC</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">7</span>
-            <span class="sd">&quot;&quot;&quot;Creates an instance of the Target class.</span>
-<span class="sd">    </span>
-<span class="sd">            Parameters:</span>
-<span class="sd">                magnitude : float</span>
-<span class="sd">                    The magnitude of the star you wish to observe.</span>
-<span class="sd">    </span>
-<span class="sd">                magsystem : obj</span>
-<span class="sd">                    The magnitude system used in the above paramer.</span>
-<span class="sd">    </span>
-<span class="sd">                filter_range : tuple</span>
-<span class="sd">                    The range of the filter used to observe this target.</span>
-<span class="sd">    </span>
-<span class="sd">                SED : obj (optional)</span>
-<span class="sd">                    The spectral energy distribution of the target star.</span>
-<span class="sd">                    Default is None.</span>
-<span class="sd">    </span>
-<span class="sd">                temp : float (optional)</span>
-<span class="sd">                    The temperature of the target star. This is used to create</span>
-<span class="sd">                    a black body spectrum of the star.</span>
-<span class="sd">            &quot;&quot;&quot;</span>
+        <span class="sd">&quot;&quot;&quot;Constructor method of the Target class.</span>
 
-        <span class="c1">#Use the specified magnitude system.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Split right ascension and declination.</span>
+
+        <span class="n">ra</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">dec</span> <span class="o">=</span> <span class="n">coord</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39; &#39;</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="c1"># Use the tools.equatorial_to_horizontal() function to convert from Equatorial coordinates to Horizontal</span>
+        <span class="c1"># coordinates</span>
+        <span class="n">alt</span><span class="p">,</span> <span class="n">az</span> <span class="o">=</span> <span class="n">tools</span><span class="o">.</span><span class="n">equatorial_to_horizontal</span><span class="p">(</span><span class="n">dec</span><span class="p">,</span><span class="n">ra</span><span class="p">,</span><span class="n">local_sidereal_time</span><span class="p">)</span>
+
+        <span class="c1"># Use the specified magnitude system.</span>
         <span class="k">if</span> <span class="n">magsystem</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;vegamag&#39;</span><span class="p">:</span>
             <span class="n">magnitude_system</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">VEGAMAG</span>
         <span class="k">elif</span> <span class="n">magsystem</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;stmag&#39;</span><span class="p">:</span>
@@ -194,42 +234,48 @@
         <span class="k">elif</span> <span class="n">magsystem</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s1">&#39;abnu&#39;</span><span class="p">:</span>
             <span class="n">magnitude_system</span> <span class="o">=</span> <span class="n">u</span><span class="o">.</span><span class="n">ABmag</span>
 
-
+        <span class="c1"># Set the attributes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">alt</span> <span class="o">=</span> <span class="n">alt</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">az</span> <span class="o">=</span> <span class="n">az</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span> <span class="o">=</span> <span class="n">magnitude</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">magnitude_system</span> <span class="o">=</span> <span class="n">magnitude_system</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">SED</span> <span class="o">=</span> <span class="n">SED</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">=</span> <span class="n">temp</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter_range</span> <span class="o">=</span> <span class="n">filter_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">=</span> <span class="mi">1</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">radians</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">alt</span><span class="p">))</span>
 
 <div class="viewcode-block" id="Target.convert_to_flux"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Target.convert_to_flux">[docs]</a>    <span class="k">def</span> <span class="nf">convert_to_flux</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Convert magnitude of target star to flux.</span>
 
-<span class="sd">        Returns:</span>
+<span class="sd">        The spectrum of this flux will be identical to the spectrum of Vega.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        flux :</span>
 <span class="sd">            The wavelength flux of the target in cgs units.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1">#Get the spectrum of Vega</span>
+        <span class="c1"># Get the spectrum of Vega</span>
         <span class="n">vega</span> <span class="o">=</span> <span class="n">SourceSpectrum</span><span class="o">.</span><span class="n">from_vega</span><span class="p">()</span>
 
-        <span class="c1">#convert to flux using units.convert_flux</span>
+        <span class="c1"># Convert to flux using units.convert_flux</span>
         <span class="n">flux</span> <span class="o">=</span> <span class="n">units</span><span class="o">.</span><span class="n">convert_flux</span><span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">filter_range</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">magnitude</span><span class="o">*</span><span class="n">magntidue_system</span><span class="p">,</span>
             <span class="n">units</span><span class="o">.</span><span class="n">FLAM</span><span class="p">,</span>
-            <span class="n">vegaspec</span><span class="o">=</span><span class="n">vega</span>
-        <span class="p">)</span>
+            <span class="n">vegaspec</span><span class="o">=</span><span class="n">vega</span><span class="p">)</span>
 
-        <span class="c1">#return the flux of the star</span>
+        <span class="c1"># Return the flux of the star</span>
         <span class="k">return</span> <span class="n">flux</span></div>
 
 <div class="viewcode-block" id="Target.blackbody_lambda"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Target.blackbody_lambda">[docs]</a>    <span class="k">def</span> <span class="nf">blackbody_lambda</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+
         <span class="sd">&quot;&quot;&quot;Calculates the spectrum of a blackbody from temperature temp.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            The wavelength flux of the target as determined by a blackbody</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1">#Get a black body spectrum of temperature temp</span>
+        <span class="c1"># Get a black body spectrum of temperature temp</span>
         <span class="n">sp</span> <span class="o">=</span> <span class="n">SourceSpectrum</span><span class="p">(</span><span class="n">BlackBody1D</span><span class="p">,</span> <span class="n">temperature</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">temp</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">K</span><span class="p">)</span>
         <span class="n">sp_new</span> <span class="o">=</span> <span class="n">sp</span> <span class="o">/</span> <span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">sp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">range</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">AA</span><span class="p">,</span>
                                  <span class="n">flux_unit</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">FLAM</span>
@@ -238,7 +284,45 @@
         <span class="n">x</span> <span class="o">=</span> <span class="n">sp_new</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">30000</span><span class="p">)</span> <span class="o">*</span> <span class="n">u</span><span class="o">.</span><span class="n">AA</span><span class="p">,</span> <span class="n">flux_unit</span><span class="o">=</span><span class="n">units</span><span class="o">.</span><span class="n">FLAM</span><span class="p">)</span>
         <span class="n">bb_lam</span> <span class="o">=</span> <span class="n">ius</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">30000</span><span class="p">),</span> <span class="n">x</span><span class="p">)</span>
 
-        <span class="k">return</span> <span class="n">bb_lam</span></div></div>
+        <span class="k">return</span> <span class="n">bb_lam</span></div>
+
+<div class="viewcode-block" id="Target.transmission"><a class="viewcode-back" href="../signal_to_noise.html#signal_to_noise.Target.transmission">[docs]</a>    <span class="k">def</span> <span class="nf">transmission</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Determines the amount of transmission allowed by the sky based on the targets altitude.</span>
+
+<span class="sd">         This method takes the airmass of the star and searches through the package data files to find the file that</span>
+<span class="sd">         most closely resembles that airmass. It returns the transmission of the sky interpolated over the newly defined</span>
+<span class="sd">         attribute ``Target.transmission_range`` which is a tuple containing the wavelength range in angstroms contained</span>
+<span class="sd">         in the data file.</span>
+
+<span class="sd">         Returns</span>
+<span class="sd">         -------</span>
+<span class="sd">            interpolated_transmission : Interpolated Object</span>
+<span class="sd">                The transmission of the filter interpolated.</span>
+
+<span class="sd">         &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">&lt;=</span> <span class="mf">1.25</span><span class="p">:</span>
+            <span class="n">trans_file</span> <span class="o">=</span> <span class="s1">&#39;trans_1.txt&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">&lt;</span> <span class="mf">1.75</span> <span class="ow">and</span> <span class="n">airmass</span> <span class="o">&gt;</span> <span class="mf">1.25</span><span class="p">:</span>
+            <span class="n">trans_file</span> <span class="o">=</span> <span class="s1">&#39;trans_1_5.txt&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">&gt;=</span> <span class="mf">1.75</span> <span class="ow">and</span> <span class="n">airmass</span> <span class="o">&lt;</span> <span class="mf">2.25</span><span class="p">:</span>
+            <span class="n">trans_file</span> <span class="o">=</span> <span class="s1">&#39;trans_2.txt&#39;</span>
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">airmass</span> <span class="o">&gt;=</span> <span class="mf">2.25</span><span class="p">:</span>
+            <span class="n">trans_file</span> <span class="o">=</span> <span class="s1">&#39;trans_2_5.txt&#39;</span>
+
+        <span class="n">path_to_file</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span><span class="s1">&#39;/data/Sky/&#39;</span> <span class="o">+</span> <span class="n">trans_file</span>
+
+        <span class="n">transmission</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">loadtxt</span><span class="p">(</span><span class="n">path_to_file</span><span class="p">)</span>
+
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="n">transmission</span><span class="p">[:,</span> <span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="mi">10</span>
+        <span class="n">trans</span> <span class="o">=</span> <span class="n">transmission</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">]</span>
+
+        <span class="n">interpolated_transmission</span> <span class="o">=</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">trans</span><span class="p">)</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="n">Target</span><span class="p">,</span> <span class="s1">&#39;transmission_range&#39;</span><span class="p">,</span> <span class="p">[</span><span class="n">wavelength</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wavelength</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]])</span>
+
+        <span class="k">return</span> <span class="n">interpolated_transmission</span></div></div>
+
+
 
 
 <span class="c1">#</span>
@@ -343,6 +427,9 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/3_5.JPG" alt="Logo"/>
+            </a></p>
 <h1 class="logo"><a href="../index.html">APOETC</a></h1>
 
 
@@ -397,7 +484,7 @@
       &copy;None.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

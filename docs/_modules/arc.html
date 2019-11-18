@@ -43,47 +43,24 @@
 <div class="viewcode-block" id="Instrument"><a class="viewcode-back" href="../arc.html#arc.Instrument">[docs]</a><span class="k">class</span> <span class="nc">Instrument</span><span class="p">:</span>
     <span class="sd">&quot;&quot;&quot;This object represents the instrument used.</span>
 
-<span class="sd">    I guess I&#39;m expected to go into much more detail about what this object does. I think</span>
-<span class="sd">    the best way to describe is that it set&#39;s all of the properties an instrument inherently has</span>
-<span class="sd">    as attributes and it allows it do thinkgs like determine transmission of a certain filter.</span>
+<span class="sd">    The ARC 3.5 meter telescope has a 5 different instruments available. For a list of instrument names and</span>
+<span class="sd">    specifications, check out their `user manual &lt;https://www.apo.nmsu.edu/arc35m/&gt;`_.</span>
 
-<span class="sd">    Parameters</span>
-<span class="sd">    -----------</span>
-<span class="sd">    inst_name : str</span>
-<span class="sd">        The name of the isntrument used.</span>
+<span class="sd">    Args:</span>
+<span class="sd">        inst_name (str): The name of the instrument used.</span>
 
-<span class="sd">    Attributes</span>
-<span class="sd">    -----------</span>
-<span class="sd">    inst_name : str</span>
-<span class="sd">        The name of the instrument.</span>
+<span class="sd">    Attributes:</span>
+<span class="sd">        readout_noise (float): The readout noise of the instrument.</span>
+<span class="sd">        gain (float): The gain of the instrument.</span>
+<span class="sd">        inst_name (str): The name of the instrument.</span>
+<span class="sd">        sensitivity (arr): The quantum efficiency (per angstrom) of the instrument.</span>
+<span class="sd">        wavelength (arr): The wavelengths corresponding to the sensitivity attribute.</span>
+<span class="sd">        plate_scale (float): The plate scale of the instrument.</span>
 
-<span class="sd">    readout_noise : float</span>
-<span class="sd">        The readout noise of the instrument.</span>
-
-<span class="sd">    gain : float</span>
-<span class="sd">        The gain of the instrument.</span>
-
-<span class="sd">    sensitivity : arr</span>
-<span class="sd">        The quantum efficiency (per angstrom) of the instrument.</span>
-
-<span class="sd">    wavelength : arr</span>
-<span class="sd">        The wavelengths corresponding to the sensitivity attribute.</span>
-
-<span class="sd">    plate_scale : float</span>
-<span class="sd">        The plate scale of the instrument.</span>
-
-<span class="sd">    Methods</span>
-<span class="sd">    -------</span>
-<span class="sd">    filter(filter)</span>
-<span class="sd">        Name of the filter used.</span>
-<span class="sd">    interpolate_efficiency</span>
-<span class="sd">        Interpolate the efficiency of the instrument.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inst_name</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;The constructor for the Instrument class.</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Path to the directory containing instrument data:</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">filter_range</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="n">path_to_dir</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/&#39;</span> <span class="o">+</span> <span class="n">inst_name</span>
@@ -116,7 +93,14 @@
 <div class="viewcode-block" id="Instrument.filter"><a class="viewcode-back" href="../arc.html#arc.Instrument.filter">[docs]</a>    <span class="k">def</span> <span class="nf">filter</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method that returns the transmission of specified filter.</span>
 
-<span class="sd">        The name of the filter used must match one the options in the filters attribute.</span>
+<span class="sd">        The Astrophysical Research Consortium 3.5m telescope uses both Johnson-Cousins and SDSS prime filters.</span>
+<span class="sd">        the `filter` parameter must equal one of the following::</span>
+
+<span class="sd">            *&#39;U&#39;        *&#39;gprime&#39;</span>
+<span class="sd">            *&#39;B&#39;        *&#39;uprime&#39;</span>
+<span class="sd">            *&#39;V&#39;        *&#39;rprime&#39;</span>
+<span class="sd">            *&#39;R&#39;        *&#39;zprime&#39;</span>
+<span class="sd">            *&#39;I&#39;        *&#39;iprime&#39;</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
@@ -153,10 +137,11 @@
 <div class="viewcode-block" id="Instrument.interpolate_efficiency"><a class="viewcode-back" href="../arc.html#arc.Instrument.interpolate_efficiency">[docs]</a>    <span class="k">def</span> <span class="nf">interpolate_efficiency</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Method that interpolates the quantum efficiency.</span>
 
-<span class="sd">        Return : Interpolated object</span>
+<span class="sd">        Return</span>
+<span class="sd">        ------</span>
+<span class="sd">        efficiency : Interpolated object</span>
 <span class="sd">            The efficiency of the instrument interpolated over the appropriate wavelengths (in Angstroms).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-
         <span class="c1"># Interpolate the efficiency</span>
         <span class="n">efficiency</span> <span class="o">=</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">wavelength</span><span class="p">,</span>
                                                   <span class="bp">self</span><span class="o">.</span><span class="n">sensitivity</span><span class="p">,</span>
@@ -166,10 +151,12 @@
 
 
 <div class="viewcode-block" id="Telescope"><a class="viewcode-back" href="../arc.html#arc.Telescope">[docs]</a><span class="k">class</span> <span class="nc">Telescope</span><span class="p">:</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Object that represents the telescope used.</span>
+    <span class="sd">&quot;&quot;&quot;Object that represents the telescope used.</span>
 
 <span class="sd">    For our purposes, this telescope really represents the Astrophysical Research Consortium 3.5m telescope</span>
-<span class="sd">    but we hope to make it more versatile in the future.</span>
+<span class="sd">    but we hope to make it more versatile in the future. The ``throughput`` attribute is defined by the reflectivity</span>
+<span class="sd">    of aluminum from 2000 A to 100000 A as determined by</span>
+<span class="sd">    `laserbeamproducts.com &lt;https://laserbeamproducts.wordpress.com/2014/06/19/reflectivity-of-aluminium-uv-visible-and-infrared/&gt;`_.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    -----------</span>
@@ -187,8 +174,8 @@
 <span class="sd">    area : float</span>
 <span class="sd">        The light gathering area of the primary mirror.</span>
 
-<span class="sd">    throughput : float</span>
-<span class="sd">        The total throughput of the telescope. This is set to be 0.90.</span>
+<span class="sd">    throughput : Intepolated object</span>
+<span class="sd">        The throughput of the telescope which is based on the reflectivity of aluminum.</span>
 
 <span class="sd">    latitude : str</span>
 <span class="sd">        Latitude of the observatory. Defaults to 32.7803.</span>
@@ -202,8 +189,18 @@
                  <span class="n">mirror_diameter</span><span class="o">=</span><span class="mi">350</span><span class="p">,</span>
                  <span class="n">coord</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;32.7803&#39;</span><span class="p">,</span> <span class="s1">&#39;-105.8203&#39;</span><span class="p">]</span>
                  <span class="p">):</span>
+
         <span class="sd">&quot;&quot;&quot;The constructor of the Telescope class.</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="c1"># Set the path to the aluminum data file.</span>
+
+        <span class="n">path_to_file</span> <span class="o">=</span> <span class="n">dirname</span><span class="p">(</span><span class="n">abspath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span> <span class="o">+</span> <span class="s1">&#39;/data/APO/al_reflectivity.dat&#39;</span>
+
+        <span class="c1"># Wavelength of reflectivity of Aluminum is the first column (in Angstroms)</span>
+        <span class="n">wavelength</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_file</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">transmission</span> <span class="o">=</span> <span class="n">ascii</span><span class="o">.</span><span class="n">read</span><span class="p">(</span><span class="n">path_to_file</span><span class="p">)[</span><span class="mi">1</span><span class="p">]</span>
 
         <span class="c1"># Name of observatory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obs_name</span> <span class="o">=</span> <span class="n">obs_name</span>
@@ -211,8 +208,9 @@
         <span class="c1"># Aperature area</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">area</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span> <span class="o">*</span> <span class="p">(</span><span class="n">mirror_diameter</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span> <span class="o">**</span> <span class="mi">2</span>  <span class="c1"># pi r^2 #cm</span>
 
-        <span class="c1"># Throughput of telescope.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">throughput</span> <span class="o">=</span> <span class="mf">0.90</span>  <span class="c1"># Random but reasonable number</span>
+        <span class="c1"># Throughput of telescope, based on reflectivity of aluminum.</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">throughput</span> <span class="o">=</span> <span class="n">InterpolatedUnivariateSpline</span><span class="p">(</span><span class="n">wavelength</span><span class="p">,</span> <span class="n">transmission</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">throughput_range</span> <span class="o">=</span> <span class="p">[</span><span class="n">wavelength</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">wavelength</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]]</span>
 
         <span class="c1"># Latitude and longitude of the observatory</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">latitude</span> <span class="o">=</span> <span class="n">coord</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
@@ -225,6 +223,9 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="../index.html">
+              <img class="logo" src="../_static/3_5.JPG" alt="Logo"/>
+            </a></p>
 <h1 class="logo"><a href="../index.html">APOETC</a></h1>
 
 
@@ -279,7 +280,7 @@
       &copy;None.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

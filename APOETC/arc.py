@@ -13,37 +13,21 @@ class Instrument:
     The ARC 3.5 meter telescope has a 5 different instruments available. For a list of instrument names and
     specifications, check out their `user manual <https://www.apo.nmsu.edu/arc35m/>`_.
 
-    Parameters
-    -----------
-    inst_name : str
-        The name of the isntrument used.
+    Args:
+        inst_name (str): The name of the instrument used.
 
-    Attributes
-    -----------
-    inst_name : str
-        The name of the instrument.
-
-    readout_noise : float
-        The readout noise of the instrument.
-
-    gain : float
-        The gain of the instrument.
-
-    sensitivity : arr
-        The quantum efficiency (per angstrom) of the instrument.
-
-    wavelength : arr
-        The wavelengths corresponding to the sensitivity attribute.
-
-    plate_scale : float
-        The plate scale of the instrument.
+    Attributes:
+        readout_noise (float): The readout noise of the instrument.
+        gain (float): The gain of the instrument.
+        inst_name (str): The name of the instrument.
+        sensitivity (arr): The quantum efficiency (per angstrom) of the instrument.
+        wavelength (arr): The wavelengths corresponding to the sensitivity attribute.
+        plate_scale (float): The plate scale of the instrument.
 
     """
 
     def __init__(self, inst_name):
-        """The constructor for the Instrument class.
 
-        """
         # Path to the directory containing instrument data:
         self.filter_range = None
         path_to_dir = dirname(abspath(__file__)) + '/data/APO/' + inst_name

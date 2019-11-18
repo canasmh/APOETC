@@ -36,27 +36,27 @@
 <p>some text.</p>
 <span class="target" id="module-tools"></span><dl class="function">
 <dt id="tools.equatorial_to_horizontal">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">equatorial_to_horizontal</code><span class="sig-paren">(</span><em class="sig-param">declination</em>, <em class="sig-param">right_ascension</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">observers_latitude='32.7803'</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.equatorial_to_horizontal" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">equatorial_to_horizontal</code><span class="sig-paren">(</span><em class="sig-param">declination</em>, <em class="sig-param">right_ascension</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">observers_latitude='32.7803'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#equatorial_to_horizontal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.equatorial_to_horizontal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts from equatorial coordinate system to horizontal coordinate system.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>declination</strong><span class="classifier">str</span></dt><dd><p>Declination of the target in sexagesimal format ‘dd:mm:ss.s’.</p>
+<dl class="simple">
+<dt>declination<span class="classifier">str</span></dt><dd><p>Declination of the target in sexagesimal format ‘dd:mm:ss.s’.</p>
 </dd>
-<dt><strong>right_ascension</strong><span class="classifier">str</span></dt><dd><p>Right ascension of the target in sexagesimal format ‘hh:mm:ss’.</p>
+<dt>right_ascension<span class="classifier">str</span></dt><dd><p>Right ascension of the target in sexagesimal format ‘hh:mm:ss’.</p>
 </dd>
-<dt><strong>local_sidereal_time</strong><span class="classifier">str</span></dt><dd><p>The local sidereal time which you wish to compute the horizontal coordinates for. Given in Military format.</p>
+<dt>local_sidereal_time<span class="classifier">str</span></dt><dd><p>The local sidereal time which you wish to compute the horizontal coordinates for. Given in Military format.</p>
 </dd>
-<dt><strong>observers_latitude</strong><span class="classifier">str, optional</span></dt><dd><p>The altitude of the observatory. Defaults to 32.7803.</p>
+<dt>observers_latitude<span class="classifier">str, optional</span></dt><dd><p>The altitude of the observatory. Defaults to 32.7803.</p>
 </dd>
 </dl>
+<dl class="simple">
+<dt>az, alt<span class="classifier">tuple</span></dt><dd><p>The azimuth and altitude based off the equatorial coordinates provided.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="tools.flux_to_countrate">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">flux_to_countrate</code><span class="sig-paren">(</span><em class="sig-param">flux</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.flux_to_countrate" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">flux_to_countrate</code><span class="sig-paren">(</span><em class="sig-param">flux</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#flux_to_countrate"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.flux_to_countrate" title="Permalink to this definition">¶</a></dt>
 <dd><p>Simple function that converts flux (in cgs) per wavelength to count rates
 :param flux:
 :return:</p>
@@ -64,48 +64,36 @@
 
 <dl class="function">
 <dt id="tools.localtime_to_lst">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_lst</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em>, <em class="sig-param">latitude='32.7803'</em>, <em class="sig-param">longitude='-108.8203'</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.localtime_to_lst" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_lst</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em>, <em class="sig-param">latitude='32.7803'</em>, <em class="sig-param">longitude='-108.8203'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#localtime_to_lst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.localtime_to_lst" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts local time at APO to local sidereal time</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>local</strong><span class="classifier">str</span></dt><dd><p>Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p>
+<dl class="simple">
+<dt>local<span class="classifier">str</span></dt><dd><p>Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p>
 </dd>
-<dt><strong>mdt</strong><span class="classifier">bool, optional</span></dt><dd><p>Mountain Daylight time. Default is True</p>
+<dt>mdt<span class="classifier">bool, optional</span></dt><dd><p>Mountain Daylight time. Default is True</p>
 </dd>
-<dt><strong>latitude</strong><span class="classifier">str</span></dt><dd><p>Latitude of site. Set to 32.7803</p>
+<dt>latitude<span class="classifier">str</span></dt><dd><p>Latitude of site. Set to 32.7803</p>
 </dd>
-<dt><strong>longitude</strong><span class="classifier">str</span></dt><dd><p>Longitude of site. Set to -108.8203</p>
+<dt>longitude<span class="classifier">str</span></dt><dd><p>Longitude of site. Set to -108.8203</p>
 </dd>
 </dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>lst</strong><span class="classifier">str</span></dt><dd><p>Local time converted to local sidereal time.</p>
-</dd>
-</dl>
+<dl class="simple">
+<dt>lst<span class="classifier">str</span></dt><dd><p>Local time converted to local sidereal time.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="tools.localtime_to_utc">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_utc</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.localtime_to_utc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_utc</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#localtime_to_utc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.localtime_to_utc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts local time at APO to UTC</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>local</strong><span class="classifier">str</span></dt><dd><p>Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p>
+<dl class="simple">
+<dt>local<span class="classifier">str</span></dt><dd><p>Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p>
 </dd>
-<dt><strong>mdt</strong><span class="classifier">bool, optional</span></dt><dd><p>Mountain Daylight time. Default is True</p>
+<dt>mdt<span class="classifier">bool, optional</span></dt><dd><p>Mountain Daylight time. Default is True</p>
 </dd>
 </dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt><strong>utc</strong><span class="classifier">str</span></dt><dd><p>Local time and date converted to Coordinated Universal Time.</p>
-</dd>
-</dl>
+<dl class="simple">
+<dt>utc<span class="classifier">str</span></dt><dd><p>Local time and date converted to Coordinated Universal Time.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -119,6 +107,9 @@
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
+            <p class="logo"><a href="index.html">
+              <img class="logo" src="_static/3_5.JPG" alt="Logo"/>
+            </a></p>
 <h1 class="logo"><a href="index.html">APOETC</a></h1>
 
 
@@ -172,7 +163,7 @@
       &copy;None.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
