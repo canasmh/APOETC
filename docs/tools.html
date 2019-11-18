@@ -14,7 +14,6 @@
     <script type="text/javascript" src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Examples" href="examples.html" />
     <link rel="prev" title="The signal_to_noise module" href="signal_to_noise.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
@@ -37,81 +36,82 @@
 <p>some text.</p>
 <span class="target" id="module-tools"></span><dl class="function">
 <dt id="tools.dec_to_sexa">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">dec_to_sexa</code><span class="sig-paren">(</span><em class="sig-param">decimal</em>, <em class="sig-param">key</em>, <em class="sig-param">round_value=1</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#dec_to_sexa"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.dec_to_sexa" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">dec_to_sexa</code><span class="sig-paren">(</span><em class="sig-param">decimal</em>, <em class="sig-param">key</em>, <em class="sig-param">round_value=1</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.dec_to_sexa" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="simple">
 <dt>Inputs:</dt><dd><p>Decimal is the floating value of the number you want to convert
 into sexagesimal form. It must either be in hours or degrees.
 Key is a string, either “h” for hour or “d” for degrees.
 Round_value is optional, default set to 1 decimal place.</p>
 </dd>
-</dl>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The number in sexagesimal form</p>
+<dt>Returns:</dt><dd><p>The number in sexagesimal form</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="tools.equatorial_to_horizontal">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">equatorial_to_horizontal</code><span class="sig-paren">(</span><em class="sig-param">declination</em>, <em class="sig-param">right_ascension</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">observers_latitude='32.7803'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#equatorial_to_horizontal"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.equatorial_to_horizontal" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">equatorial_to_horizontal</code><span class="sig-paren">(</span><em class="sig-param">declination</em>, <em class="sig-param">right_ascension</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">observers_latitude='32.7803'</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.equatorial_to_horizontal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts from equatorial coordinate system to horizontal coordinate system.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>declination</strong> (<em>str</em>) – Declination of the target in sexagesimal format ‘dd:mm:ss.s’.</p></li>
-<li><p><strong>right_ascension</strong> (<em>str</em>) – Right ascension of the target in sexagesimal format ‘hh:mm:ss’.</p></li>
-<li><p><strong>local_sidereal_time</strong> (<em>str</em>) – The local sidereal time which you wish to compute the horizontal coordinates for. Given in Military format.</p></li>
-<li><p><strong>observers_latitude</strong> (<em>str</em><em>, </em><em>optional</em>) – The altitude of the observatory. Defaults to 32.7803.</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>declination</strong><span class="classifier">str</span></dt><dd><p>Declination of the target in sexagesimal format ‘dd:mm:ss.s’.</p>
 </dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>az, alt</strong> – The azimuth and altitude based off the equatorial coordinates provided.</p>
+<dt><strong>right_ascension</strong><span class="classifier">str</span></dt><dd><p>Right ascension of the target in sexagesimal format ‘hh:mm:ss’.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>tuple</p>
+<dt><strong>local_sidereal_time</strong><span class="classifier">str</span></dt><dd><p>The local sidereal time which you wish to compute the horizontal coordinates for. Given in Military format.</p>
+</dd>
+<dt><strong>observers_latitude</strong><span class="classifier">str, optional</span></dt><dd><p>The altitude of the observatory. Defaults to 32.7803.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="tools.localtime_to_lst">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_lst</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em>, <em class="sig-param">latitude='32.7803'</em>, <em class="sig-param">longitude='-108.8203'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#localtime_to_lst"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.localtime_to_lst" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_lst</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em>, <em class="sig-param">latitude='32.7803'</em>, <em class="sig-param">longitude='-108.8203'</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.localtime_to_lst" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts local time at APO to local sidereal time</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>local</strong> (<em>str</em>) – Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p></li>
-<li><p><strong>mdt</strong> (<em>bool</em><em>, </em><em>optional</em>) – Mountain Daylight time. Default is True</p></li>
-<li><p><strong>latitude</strong> (<em>str</em>) – Latitude of site. Set to 32.7803</p></li>
-<li><p><strong>longitude</strong> (<em>str</em>) – Longitude of site. Set to -108.8203</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>local</strong><span class="classifier">str</span></dt><dd><p>Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p>
+</dd>
+<dt><strong>mdt</strong><span class="classifier">bool, optional</span></dt><dd><p>Mountain Daylight time. Default is True</p>
+</dd>
+<dt><strong>latitude</strong><span class="classifier">str</span></dt><dd><p>Latitude of site. Set to 32.7803</p>
+</dd>
+<dt><strong>longitude</strong><span class="classifier">str</span></dt><dd><p>Longitude of site. Set to -108.8203</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>lst</strong> – Local time converted to local sidereal time.</p>
+<dd class="field-even"><dl class="simple">
+<dt><strong>lst</strong><span class="classifier">str</span></dt><dd><p>Local time converted to local sidereal time.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="tools.localtime_to_utc">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_utc</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tools.html#localtime_to_utc"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#tools.localtime_to_utc" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">localtime_to_utc</code><span class="sig-paren">(</span><em class="sig-param">local</em>, <em class="sig-param">mdt=True</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.localtime_to_utc" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts local time at APO to UTC</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>local</strong> (<em>str</em>) – Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p></li>
-<li><p><strong>mdt</strong> (<em>bool</em><em>, </em><em>optional</em>) – Mountain Daylight time. Default is True</p></li>
-</ul>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>local</strong><span class="classifier">str</span></dt><dd><p>Local time and date given in the following format: ‘YYYY/MM/DD H:M:S.’</p>
+</dd>
+<dt><strong>mdt</strong><span class="classifier">bool, optional</span></dt><dd><p>Mountain Daylight time. Default is True</p>
+</dd>
+</dl>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><strong>utc</strong> – Local time and date converted to Coordinated Universal Time.</p>
+<dd class="field-even"><dl class="simple">
+<dt><strong>utc</strong><span class="classifier">str</span></dt><dd><p>Local time and date converted to Coordinated Universal Time.</p>
 </dd>
-<dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>str</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -125,9 +125,6 @@ Round_value is optional, default set to 1 decimal place.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/3_5.JPG" alt="Logo"/>
-            </a></p>
 <h1 class="logo"><a href="index.html">APOETC</a></h1>
 
 
@@ -141,10 +138,10 @@ Round_value is optional, default set to 1 decimal place.</p>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">About the Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="signal_to_noise.html">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
 <div class="relations">
@@ -152,7 +149,6 @@ Round_value is optional, default set to 1 decimal place.</p>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="signal_to_noise.html" title="previous chapter">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a></li>
-      <li>Next: <a href="examples.html" title="next chapter">Examples</a></li>
   </ul></li>
 </ul>
 </div>
@@ -182,7 +178,7 @@ Round_value is optional, default set to 1 decimal place.</p>
       &copy;None.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

@@ -2,9 +2,12 @@
 The ``arc`` module
 ==================
 
-Some text.
+This module contains everything having to do with the Astrophysical Research Consortium (ARC) 3.5m telescope. The 
+module is composed of two classes, the ``Instrument`` class and the ``Telescope`` class. These classes are by default
+representative of the ARC 3.5m telescope, but we hope in the near future it can be generalized to many different 
+telescopes and observatories.
 
-Now let's take a look at the instrument class
+Let's take a look at the ``Instrument`` Class.
 
 The ``Instrument`` class
 ------------------------
@@ -15,7 +18,7 @@ The ``Instrument`` class
     :show-inheritance: bysource
 
 
-And now the telescope class
+As mentioned above, the ``Telescope`` is set by default to ARC 3.5m, and do not recommend using this calculator for any other telescope.
 
 The ``Telescope`` class
 ---------------------------

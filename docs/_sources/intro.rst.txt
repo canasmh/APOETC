@@ -17,11 +17,12 @@ The APOExptime package can be found our `github page <https://github.com/APOExpo
 .. Note::
    
    You must have the following packages in order for APOExptime to work:
-       numpy, 
-       matplotlib,
-       scipy,
-       synphot,
-       astropy.
+       - numpy
+       - matplotlib
+       - scipy
+       - synphot
+       - astropy
+       - ephem
 
 Once you've installed ``APOETC`` you can import its modules into python by doing:
 

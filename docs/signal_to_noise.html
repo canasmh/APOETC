@@ -39,22 +39,40 @@
 <h2>The <code class="docutils literal notranslate"><span class="pre">Moon</span></code> class<a class="headerlink" href="#the-moon-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="signal_to_noise.Moon">
-<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Moon</code><span class="sig-paren">(</span><em class="sig-param">lunar_phase</em>, <em class="sig-param">utc</em>, <em class="sig-param">lat='32.7803'</em>, <em class="sig-param">long='-105.8203'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/signal_to_noise.html#Moon"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#signal_to_noise.Moon" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Moon</code><span class="sig-paren">(</span><em class="sig-param">lunar_phase</em>, <em class="sig-param">utc</em>, <em class="sig-param">lat='32.7803'</em>, <em class="sig-param">long='-105.8203'</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Function that calculates the position and emission of the moon.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>lunar_phase</strong> (<em>float</em>) – Number from 0 to 1 where 0 is a new moon and 1 is the full moon.</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>lunar_phase</strong><span class="classifier">float</span></dt><dd><p>Number from 0 to 1 where 0 is a new moon and 1 is the full moon.</p>
 </dd>
 </dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 55%" />
+<col style="width: 45%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>coord</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>emission</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="signal_to_noise.Moon.coord">
-<code class="sig-name descname">coord</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/signal_to_noise.html#Moon.coord"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#signal_to_noise.Moon.coord" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">coord</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon.coord" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="method">
 <dt id="signal_to_noise.Moon.emission">
-<code class="sig-name descname">emission</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/signal_to_noise.html#Moon.emission"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#signal_to_noise.Moon.emission" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">emission</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon.emission" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>
@@ -64,64 +82,57 @@
 <h2>The <code class="docutils literal notranslate"><span class="pre">Target</span></code> class<a class="headerlink" href="#the-target-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="signal_to_noise.Target">
-<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Target</code><span class="sig-paren">(</span><em class="sig-param">coord</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">MDT</em>, <em class="sig-param">magnitude</em>, <em class="sig-param">magsystem</em>, <em class="sig-param">filter_range</em>, <em class="sig-param">SED=None</em>, <em class="sig-param">temp=5778</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/signal_to_noise.html#Target"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#signal_to_noise.Target" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Target</code><span class="sig-paren">(</span><em class="sig-param">coord</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">MDT</em>, <em class="sig-param">magnitude</em>, <em class="sig-param">magsystem</em>, <em class="sig-param">filter_range</em>, <em class="sig-param">SED=None</em>, <em class="sig-param">temp=5778</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object representing the target star.</p>
-<dl class="attribute">
-<dt id="signal_to_noise.Target.magnitude">
-<code class="sig-name descname">magnitude</code><a class="headerlink" href="#signal_to_noise.Target.magnitude" title="Permalink to this definition">¶</a></dt>
-<dd><p>float
-The magnitude of the star you wish to observe.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="signal_to_noise.Target.magnitude_system">
-<code class="sig-name descname">magnitude_system</code><a class="headerlink" href="#signal_to_noise.Target.magnitude_system" title="Permalink to this definition">¶</a></dt>
-<dd><p>str
-The magnitude used in the above attribute.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="signal_to_noise.Target.filter_range">
-<code class="sig-name descname">filter_range</code><a class="headerlink" href="#signal_to_noise.Target.filter_range" title="Permalink to this definition">¶</a></dt>
-<dd><p>tuple
-The band pass of the filter (xmin,xmax).</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="signal_to_noise.Target.SED">
-<code class="sig-name descname">SED</code><a class="headerlink" href="#signal_to_noise.Target.SED" title="Permalink to this definition">¶</a></dt>
-<dd><p>obj
-If specified, this will contain the interpolated spectral energy distribution
+<dl class="simple">
+<dt>Attributes:</dt><dd><dl class="simple">
+<dt>magnitude<span class="classifier">float</span></dt><dd><p>The magnitude of the star you wish to observe.</p>
+</dd>
+<dt>magnitude_system<span class="classifier">str</span></dt><dd><p>The magnitude used in the above attribute.</p>
+</dd>
+<dt>filter_range<span class="classifier">tuple</span></dt><dd><p>The band pass of the filter (xmin,xmax).</p>
+</dd>
+<dt>SED<span class="classifier">obj</span></dt><dd><p>If specified, this will contain the interpolated spectral energy distribution
 of the target star.</p>
-</dd></dl>
-
-<dl class="attribute">
-<dt id="signal_to_noise.Target.temp">
-<code class="sig-name descname">temp</code><a class="headerlink" href="#signal_to_noise.Target.temp" title="Permalink to this definition">¶</a></dt>
-<dd><p>float
-The temperature of the star. This is used only if you wish to
+</dd>
+<dt>temp<span class="classifier">float</span></dt><dd><p>The temperature of the star. This is used only if you wish to
 use Plank’s law to obtain the SED.</p>
-</dd></dl>
-
+</dd>
+</dl>
+</dd>
+</dl>
+<p class="rubric">Methods</p>
+<table class="longtable docutils align-default">
+<colgroup>
+<col style="width: 10%" />
+<col style="width: 90%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#signal_to_noise.Target.blackbody_lambda" title="signal_to_noise.Target.blackbody_lambda"><code class="xref py py-obj docutils literal notranslate"><span class="pre">blackbody_lambda</span></code></a>(self)</p></td>
+<td><p>Calculates the spectrum of a blackbody from temperature temp.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#signal_to_noise.Target.convert_to_flux" title="signal_to_noise.Target.convert_to_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_flux</span></code></a>(self)</p></td>
+<td><p>Convert magnitude of target star to flux.</p></td>
+</tr>
+</tbody>
+</table>
 <dl class="method">
 <dt id="signal_to_noise.Target.blackbody_lambda">
-<code class="sig-name descname">blackbody_lambda</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/signal_to_noise.html#Target.blackbody_lambda"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#signal_to_noise.Target.blackbody_lambda" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">blackbody_lambda</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target.blackbody_lambda" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculates the spectrum of a blackbody from temperature temp.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The wavelength flux of the target as determined by a blackbody</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The wavelength flux of the target as determined by a blackbody</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="method">
 <dt id="signal_to_noise.Target.convert_to_flux">
-<code class="sig-name descname">convert_to_flux</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/signal_to_noise.html#Target.convert_to_flux"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#signal_to_noise.Target.convert_to_flux" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">convert_to_flux</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target.convert_to_flux" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert magnitude of target star to flux.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>The wavelength flux of the target in cgs units.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>The wavelength flux of the target in cgs units.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -138,9 +149,6 @@ use Plank’s law to obtain the SED.</p>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-            <p class="logo"><a href="index.html">
-              <img class="logo" src="_static/3_5.JPG" alt="Logo"/>
-            </a></p>
 <h1 class="logo"><a href="index.html">APOETC</a></h1>
 
 
@@ -154,6 +162,7 @@ use Plank’s law to obtain the SED.</p>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">About the Package</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tutorial.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="arc.html">The <code class="docutils literal notranslate"><span class="pre">arc</span></code> module</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">The <code class="docutils literal notranslate"><span class="pre">signal_to_noise</span></code> module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#the-moon-class">The <code class="docutils literal notranslate"><span class="pre">Moon</span></code> class</a></li>
@@ -161,7 +170,6 @@ use Plank’s law to obtain the SED.</p>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tools.html">The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
 </ul>
 
 <div class="relations">
@@ -199,7 +207,7 @@ use Plank’s law to obtain the SED.</p>
       &copy;None.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
