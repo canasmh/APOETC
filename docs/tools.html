@@ -35,20 +35,6 @@
 <h1>The <code class="docutils literal notranslate"><span class="pre">tools</span></code> module<a class="headerlink" href="#the-tools-module" title="Permalink to this headline">¶</a></h1>
 <p>some text.</p>
 <span class="target" id="module-tools"></span><dl class="function">
-<dt id="tools.dec_to_sexa">
-<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">dec_to_sexa</code><span class="sig-paren">(</span><em class="sig-param">decimal</em>, <em class="sig-param">key</em>, <em class="sig-param">round_value=1</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.dec_to_sexa" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="simple">
-<dt>Inputs:</dt><dd><p>Decimal is the floating value of the number you want to convert
-into sexagesimal form. It must either be in hours or degrees.
-Key is a string, either “h” for hour or “d” for degrees.
-Round_value is optional, default set to 1 decimal place.</p>
-</dd>
-<dt>Returns:</dt><dd><p>The number in sexagesimal form</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="function">
 <dt id="tools.equatorial_to_horizontal">
 <code class="sig-prename descclassname">tools.</code><code class="sig-name descname">equatorial_to_horizontal</code><span class="sig-paren">(</span><em class="sig-param">declination</em>, <em class="sig-param">right_ascension</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">observers_latitude='32.7803'</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.equatorial_to_horizontal" title="Permalink to this definition">¶</a></dt>
 <dd><p>Converts from equatorial coordinate system to horizontal coordinate system.</p>
@@ -66,6 +52,14 @@ Round_value is optional, default set to 1 decimal place.</p>
 </dl>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="tools.flux_to_countrate">
+<code class="sig-prename descclassname">tools.</code><code class="sig-name descname">flux_to_countrate</code><span class="sig-paren">(</span><em class="sig-param">flux</em><span class="sig-paren">)</span><a class="headerlink" href="#tools.flux_to_countrate" title="Permalink to this definition">¶</a></dt>
+<dd><p>Simple function that converts flux (in cgs) per wavelength to count rates
+:param flux:
+:return:</p>
 </dd></dl>
 
 <dl class="function">

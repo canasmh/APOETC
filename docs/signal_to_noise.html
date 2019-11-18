@@ -39,7 +39,7 @@
 <h2>The <code class="docutils literal notranslate"><span class="pre">Moon</span></code> class<a class="headerlink" href="#the-moon-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="signal_to_noise.Moon">
-<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Moon</code><span class="sig-paren">(</span><em class="sig-param">lunar_phase</em>, <em class="sig-param">utc</em>, <em class="sig-param">lat='32.7803'</em>, <em class="sig-param">long='-105.8203'</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Moon</code><span class="sig-paren">(</span><em class="sig-param">lunar_phase</em>, <em class="sig-param">utc</em>, <em class="sig-param">lat='32.7803'</em>, <em class="sig-param">lon='-105.8203'</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Function that calculates the position and emission of the moon.</p>
 <dl class="field-list simple">
@@ -47,33 +47,71 @@
 <dd class="field-odd"><dl class="simple">
 <dt><strong>lunar_phase</strong><span class="classifier">float</span></dt><dd><p>Number from 0 to 1 where 0 is a new moon and 1 is the full moon.</p>
 </dd>
+<dt><strong>utc</strong><span class="classifier">str</span></dt><dd><p>The Coordinated Universal Time at which you wish to do your observation. Follow the format ‘YYY/MM/DD HH:MM’</p>
+</dd>
+<dt><strong>lat</strong><span class="classifier">str, optional</span></dt><dd><p>The geocentric latitude at which you are doing your observation. Defaults to ‘32.7803’</p>
+</dd>
+<dt><strong>lon</strong><span class="classifier">str, optional</span></dt><dd><p>The geocentric longitude at which you are doing your observation. Defaults to ‘-105.8203’</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>lunar_phase</strong><span class="classifier">float</span></dt><dd><p>Number from 0 to 1 where 0 is a new moon and 1 is the full moon.</p>
+</dd>
+<dt><strong>utc</strong><span class="classifier">str</span></dt><dd><p>The Coordinated Universal Time at which you wish to do your observation. Follow the format ‘YYY/MM/DD HH:MM’</p>
+</dd>
+<dt><strong>lat</strong><span class="classifier">str, optional</span></dt><dd><p>The geocentric latitude at which you are doing your observation. Defaults to ‘32.7803’</p>
+</dd>
+<dt><strong>lon</strong><span class="classifier">str, optional</span></dt><dd><p>The geocentric longitude at which you are doing your observation. Defaults to ‘-105.8203’</p>
+</dd>
 </dl>
 </dd>
 </dl>
 <p class="rubric">Methods</p>
-<table class="docutils align-default">
+<table class="longtable docutils align-default">
 <colgroup>
-<col style="width: 55%" />
-<col style="width: 45%" />
+<col style="width: 10%" />
+<col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><strong>coord</strong></p></td>
-<td></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#signal_to_noise.Moon.coord" title="signal_to_noise.Moon.coord"><code class="xref py py-obj docutils literal notranslate"><span class="pre">coord</span></code></a>(self)</p></td>
+<td><p>Method that returns the horizontal coordinates of the moon.</p></td>
 </tr>
-<tr class="row-even"><td><p><strong>emission</strong></p></td>
-<td></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#signal_to_noise.Moon.emission" title="signal_to_noise.Moon.emission"><code class="xref py py-obj docutils literal notranslate"><span class="pre">emission</span></code></a>(self)</p></td>
+<td><p>Method to determine the interpolated emission of the moon</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="method">
 <dt id="signal_to_noise.Moon.coord">
 <code class="sig-name descname">coord</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon.coord" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Method that returns the horizontal coordinates of the moon.</p>
+<p>This method takes the latitude, longitude, and Coordinated Universal Time to calculate the position of the moon.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>alt, ax</strong><span class="classifier">tuple</span></dt><dd><p>A tuple containing the altitude and azimuthal angles of the moon in degrees.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="method">
 <dt id="signal_to_noise.Moon.emission">
 <code class="sig-name descname">emission</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Moon.emission" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Method to determine the interpolated emission of the moon</p>
+<p>This method takes the lunar phase and uses a data file to determine the emission over a range of wavelengths.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>emission</strong><span class="classifier">Interpolated Object</span></dt><dd><p>The emission of the moon.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -82,22 +120,52 @@
 <h2>The <code class="docutils literal notranslate"><span class="pre">Target</span></code> class<a class="headerlink" href="#the-target-class" title="Permalink to this headline">¶</a></h2>
 <dl class="class">
 <dt id="signal_to_noise.Target">
-<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Target</code><span class="sig-paren">(</span><em class="sig-param">coord</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">MDT</em>, <em class="sig-param">magnitude</em>, <em class="sig-param">magsystem</em>, <em class="sig-param">filter_range</em>, <em class="sig-param">SED=None</em>, <em class="sig-param">temp=5778</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">signal_to_noise.</code><code class="sig-name descname">Target</code><span class="sig-paren">(</span><em class="sig-param">coord</em>, <em class="sig-param">local_sidereal_time</em>, <em class="sig-param">magnitude</em>, <em class="sig-param">magnitude_system</em>, <em class="sig-param">filter_range</em>, <em class="sig-param">temp=5778</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Object representing the target star.</p>
-<dl class="simple">
-<dt>Attributes:</dt><dd><dl class="simple">
-<dt>magnitude<span class="classifier">float</span></dt><dd><p>The magnitude of the star you wish to observe.</p>
+<p>This object is only functional for unresolved or point sources. You might get away with using it for planets, but
+I definitely wouldn’t recommend using this package if you’re observing something like a galaxy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>coord</strong><span class="classifier">str</span></dt><dd><p>The equatorial coordinate of the star you wish to observe. Right ascension in hours and declination in degrees.
+‘HH:MM:SS.S DD:MM:SS.S’.</p>
 </dd>
-<dt>magnitude_system<span class="classifier">str</span></dt><dd><p>The magnitude used in the above attribute.</p>
+<dt><strong>local_sidereal_time</strong><span class="classifier">str</span></dt><dd><p>The local sidereal time of the observation in the format ‘HH:MM:SS.S’.</p>
 </dd>
-<dt>filter_range<span class="classifier">tuple</span></dt><dd><p>The band pass of the filter (xmin,xmax).</p>
+<dt><strong>mdt</strong><span class="classifier">bool</span></dt><dd><p>Mountain Daylight Time. True if you are observing between March 10 - November 03.</p>
 </dd>
-<dt>SED<span class="classifier">obj</span></dt><dd><p>If specified, this will contain the interpolated spectral energy distribution
+<dt><strong>magnitude</strong><span class="classifier">float</span></dt><dd><p>The magnitude of the target star.</p>
+</dd>
+<dt><strong>magnitude_system</strong><span class="classifier">str</span></dt><dd><p>The magnitude system used to define <code class="docutils literal notranslate"><span class="pre">magnitude</span></code>.</p>
+</dd>
+<dt><strong>range</strong><span class="classifier">tuple</span></dt><dd><p>The range of interest. If using a filter, then this should be the filter range. If using a spectrograph, then
+refer to the dispersion of the spectrograph to determine your range.</p>
+</dd>
+<dt><strong>temp = float, optional</strong></dt><dd><p>The temperature of the target star. This is used to calculate a black body spectrum of the same temperature.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Attributes</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>alt</strong><span class="classifier">float</span></dt><dd><p>The altitude of the star in degrees.</p>
+</dd>
+<dt><strong>az</strong><span class="classifier">float</span></dt><dd><p>The azimuthal angle of the star in degrees.</p>
+</dd>
+<dt><strong>magnitude</strong><span class="classifier">float</span></dt><dd><p>The magnitude of the star you wish to observe.</p>
+</dd>
+<dt><strong>magnitude_system</strong><span class="classifier">str</span></dt><dd><p>The magnitude used in the above attribute.</p>
+</dd>
+<dt><strong>filter_range</strong><span class="classifier">tuple</span></dt><dd><p>The band pass of the filter (xmin,xmax).</p>
+</dd>
+<dt><strong>SED</strong><span class="classifier">obj</span></dt><dd><p>If specified, this will contain the interpolated spectral energy distribution
 of the target star.</p>
 </dd>
-<dt>temp<span class="classifier">float</span></dt><dd><p>The temperature of the star. This is used only if you wish to
+<dt><strong>temp</strong><span class="classifier">float</span></dt><dd><p>The temperature of the star. This is used only if you wish to
 use Plank’s law to obtain the SED.</p>
+</dd>
+<dt><strong>airmass</strong><span class="classifier">float</span></dt><dd><p>The airmass of the star. This is calculated using the relationship X = sec(z), where
+the zenith angle is 1 - alt.</p>
 </dd>
 </dl>
 </dd>
@@ -115,6 +183,9 @@ use Plank’s law to obtain the SED.</p>
 <tr class="row-even"><td><p><a class="reference internal" href="#signal_to_noise.Target.convert_to_flux" title="signal_to_noise.Target.convert_to_flux"><code class="xref py py-obj docutils literal notranslate"><span class="pre">convert_to_flux</span></code></a>(self)</p></td>
 <td><p>Convert magnitude of target star to flux.</p></td>
 </tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#signal_to_noise.Target.transmission" title="signal_to_noise.Target.transmission"><code class="xref py py-obj docutils literal notranslate"><span class="pre">transmission</span></code></a>(self)</p></td>
+<td><p>Determines the amount of transmission allowed by the sky based on the targets altitude.</p></td>
+</tr>
 </tbody>
 </table>
 <dl class="method">
@@ -131,8 +202,31 @@ use Plank’s law to obtain the SED.</p>
 <dt id="signal_to_noise.Target.convert_to_flux">
 <code class="sig-name descname">convert_to_flux</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target.convert_to_flux" title="Permalink to this definition">¶</a></dt>
 <dd><p>Convert magnitude of target star to flux.</p>
-<dl class="simple">
-<dt>Returns:</dt><dd><p>The wavelength flux of the target in cgs units.</p>
+<p>The spectrum of this flux will be identical to the spectrum of Vega.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt>flux :</dt><dd><p>The wavelength flux of the target in cgs units.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="signal_to_noise.Target.transmission">
+<code class="sig-name descname">transmission</code><span class="sig-paren">(</span><em class="sig-param">self</em><span class="sig-paren">)</span><a class="headerlink" href="#signal_to_noise.Target.transmission" title="Permalink to this definition">¶</a></dt>
+<dd><p>Determines the amount of transmission allowed by the sky based on the targets altitude.</p>
+<p>This method takes the airmass of the star and searches through the package data files to find the file that
+most closely resembles that airmass. It returns the transmission of the sky interpolated over the newly defined
+attribute <code class="docutils literal notranslate"><span class="pre">Target.transmission_range</span></code> which is a tuple containing the wavelength range in angstroms contained
+in the data file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>interpolated_transmission</strong><span class="classifier">Interpolated Object</span></dt><dd><p>The transmission of the filter interpolated.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
